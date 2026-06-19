@@ -1,4 +1,5 @@
 "use client";
+import { ThemeProvider } from "next-themes";
 import { queryClient } from "@/lib/react-query";
 import {
   isServer,
@@ -17,7 +18,9 @@ export function Providers({
   const qClient = getQueryClient();
   return (
     <QueryClientProvider client={qClient}>
-      {children}
+      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+        {children}
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
