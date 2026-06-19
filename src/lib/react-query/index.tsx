@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import { QueryClient, UseMutationOptions } from "@tanstack/react-query";
+import { QueryClient, UseMutationOptions, UseQueryOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 export const queryClient = new QueryClient({
@@ -32,8 +32,14 @@ export const queryClient = new QueryClient({
 export type TApiFnReturnType<FnType extends (...args: any) => Promise<any>> =
   Awaited<ReturnType<FnType>>;
 
-export type TQueryConfig<T extends (...args: any[]) => any> = Omit<
-  ReturnType<T>,
+export type TQueryConfig<
+  QueryFnType extends (...args: any) => Promise<any>,
+> = Omit<
+  UseQueryOptions<
+    TApiFnReturnType<QueryFnType>,
+    Error,
+    TApiFnReturnType<QueryFnType>
+  >,
   "queryKey" | "queryFn"
 >;
 
