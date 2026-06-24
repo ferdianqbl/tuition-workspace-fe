@@ -40,7 +40,7 @@ baseApi.interceptors.response.use(
       if (currentPath !== "/") {
         window.location.href = `/?from=${currentPath}`;
       }
-      throw new Error("Sesi login Anda telah berakhir");
+      throw new Error("Your login session has expired. Please log in again.");
     }
     return Promise.reject(error);
   }
