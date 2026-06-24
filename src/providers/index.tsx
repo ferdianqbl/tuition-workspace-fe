@@ -18,7 +18,7 @@ export function Providers({
   const qClient = getQueryClient();
   return (
     <QueryClientProvider client={qClient}>
-      <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+      <ThemeProvider attribute="class" defaultTheme="dark" forcedTheme="dark">
         {children}
       </ThemeProvider>
     </QueryClientProvider>
