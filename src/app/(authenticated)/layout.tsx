@@ -38,7 +38,7 @@ export default function AuthenticatedLayout({
     return (
       <div className="min-h-screen bg-neutral-950 flex flex-col items-center justify-center text-neutral-400">
         <Loader2 className="w-8 h-8 animate-spin text-indigo-500 mb-4" />
-        <p className="text-sm font-medium">Memverifikasi sesi...</p>
+        <p className="text-sm font-medium">Verifying session...</p>
       </div>
     );
   }

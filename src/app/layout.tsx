@@ -2,6 +2,7 @@ import { cn } from "@/lib/utils";
 import { Providers } from "@/providers";
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Inter } from "next/font/google";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-sans" });
@@ -17,8 +18,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Next.js Project Starter",
-  description: "Starter template preconfigured with Tanstack Query, Axios, and Zustand",
+  title: "Tuition Case Workspace",
+  description: "Secure workspace platform for tuition cases and tutor matching",
 };
 
 export default function RootLayout({
@@ -39,8 +40,11 @@ export default function RootLayout({
         inter.variable,
       )}
     >
-      <body className="min-h-full flex flex-col">
-        <Providers>{children}</Providers>
+      <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

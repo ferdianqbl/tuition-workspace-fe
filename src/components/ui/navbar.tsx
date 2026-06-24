@@ -8,6 +8,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { Sparkles, LogOut, Briefcase, Users, User, LayoutDashboard, Menu, X } from "lucide-react";
 import { useState } from "react";
 import { getToken } from "@/lib/axios";
+import { Button } from "@/components/ui/button";
 
 export function Navbar() {
   const pathname = usePathname();
@@ -111,13 +112,15 @@ export function Navbar() {
                 {user.role}
               </span>
             </div>
-            <button
+            <Button
               onClick={handleLogout}
-              className="flex items-center justify-center p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-all hover:bg-neutral-850"
+              variant="outline"
+              size="icon"
+              className="rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-all hover:bg-neutral-850"
               title="Logout"
             >
               <LogOut className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
 
           {/* Mobile menu button */}
@@ -128,12 +131,14 @@ export function Navbar() {
                 {user.role}
               </span>
             </div>
-            <button
+            <Button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="p-2 rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-all"
+              variant="outline"
+              size="icon"
+              className="rounded-xl bg-neutral-900 border border-neutral-800 text-neutral-400 hover:text-white transition-all"
             >
               {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
-            </button>
+            </Button>
           </div>
         </div>
       </div>
@@ -162,16 +167,17 @@ export function Navbar() {
                 </Link>
               );
             })}
-          <button
+          <Button
             onClick={() => {
               setMobileMenuOpen(false);
               handleLogout();
             }}
-            className="w-full flex items-center gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all border border-transparent hover:border-rose-500/20"
+            variant="ghost"
+            className="w-full flex items-center justify-start gap-3 px-4 py-2.5 rounded-xl text-sm font-semibold text-rose-400 hover:bg-rose-500/10 hover:text-rose-300 transition-all border border-transparent hover:border-rose-500/20"
           >
             <LogOut className="w-4 h-4" />
             Keluar (Logout)
-          </button>
+          </Button>
         </div>
       )}
     </nav>
