@@ -28,6 +28,7 @@ Here is how the Next.js App Router frontend implements each section of the techn
 
 ### D. Secure Document Workspace
 * **Upload constraints**: React file input restricts files via `accept=".pdf,.docx,.png,.jpg,.jpeg"`.
+* **Vercel Writeable Storage (/tmp)**: Adapts to Vercel's read-only file systems by utilizing the backend's `/tmp` redirect utility for temporary file streams, ensuring uploads succeed in serverless container runs.
 * **Upload/Download checks**: Uses Axios multipart requests. File download triggers a query that reads the secure stream, catching and displaying custom permission warnings if the backend revokes access.
 
 ### E. Tutor Profiles
