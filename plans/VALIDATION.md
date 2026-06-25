@@ -23,6 +23,7 @@ Here is how the Next.js App Router frontend implements each section of the techn
   - Tutors are presented with a restricted "Invited Cases" list and cannot see the "All Tutors Directory".
   - Parents are shown case owner tools (e.g. "Invite Tutor" search controls and access list selectors) that are completely hidden from tutor accounts.
   - Buttons like "Upload Document" are hidden/disabled unless permissions are verified.
+* **Tutor Directory Restriction**: Tutors are blocked from searching or viewing other tutors' profiles. The frontend navbar hides `/tutors` paths for tutors, and any manual access to `/tutors` routes triggers the Layout Guard to render a clean, branded `<ForbiddenScreen />`.
 * **Graceful Refusal (403/401)**: If a user attempts to manually bypass routes or fetches fail, layout guards intercept the responses and render a clean, branded `<ForbiddenScreen />` or `<NotFoundScreen />` rather than a blank page or blank layout crash.
 
 ### D. Secure Document Workspace
@@ -45,7 +46,15 @@ npm run build
 ```
 
 * **TypeScript Compilation**: **Passed**. All schemas and query types resolve without type violations.
-* **Next.js Route Generator**: **Passed**. Generates static and dynamic pages (`/`, `/dashboard`, `/profile`, `/tutors`, `/tutors/:id`, `/cases`, `/cases/:id`) without layout conflicts.
+* **Next.js Route Generator**: **Passed**. Generates static and dynamic pages with the following structure:
+  - `○ /` (Static login/registration landing page)
+  - `○ /_not-found` (Static 404 page)
+  - `○ /cases` (Static cases index page)
+  - `ƒ /cases/[id]` (Dynamic server-rendered case workspace)
+  - `○ /dashboard` (Static user landing dashboard)
+  - `○ /profile` (Static tutor settings panel)
+  - `○ /tutors` (Static tutor directory list)
+  - `ƒ /tutors/[id]` (Dynamic server-rendered tutor detail)
 * **Tailwind CSS Compilation**: **Passed**. Styles compile cleanly.
 
 ---
