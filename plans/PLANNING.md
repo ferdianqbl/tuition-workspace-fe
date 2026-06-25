@@ -44,3 +44,14 @@ The frontend isolates layout configurations, pages, and components using a clean
 
 - **Server Cache**: Maintained using TanStack Query. Provides request states (`isLoading`, `isPending`, `error`) and automated cache invalidation upon query mutations.
 - **Local Credentials State**: Stores session parameters and access tokens securely in `localStorage` to persist active sessions across page reloads.
+
+---
+
+## 5. Vercel Deployment & Environment Settings
+
+- **Framework**: Next.js App Router (built dynamically during Vercel builds).
+- **Environment Variables**:
+  - `NEXT_PUBLIC_API_BASE_URL`: Configured in the Vercel dashboard to point to the backend API.
+    - Local Development: `http://localhost:8000/api`
+    - Production Vercel: `https://tuition-workspace-api.vercel.app/api`
+- **Network Interface**: Axios network queries automatically read this base endpoint to resolve all data exchanges.
