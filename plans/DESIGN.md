@@ -62,3 +62,12 @@ The app is locked to a dark, modern obsidian theme. Colors are defined in `globa
 ### Tabs
 - List selector bar: `bg-neutral-950/80 border border-neutral-800/50 p-1.5 rounded-xl gap-2`.
 - Option triggers: `rounded-lg py-2 text-xs font-semibold data-active:bg-neutral-800 data-active:text-white`.
+
+---
+
+## 🔗 Cross-Repository References
+
+- **Backend Repository**: [tuition-workspace-api](https://github.com/ferdianqbl/tuition-workspace-api)
+- **Backend API Reference (Specs)**: [be/plans/API.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/API.md)
+- **Backend System Architecture**: [be/plans/SYSTEM_ARCHITECTURE.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/SYSTEM_ARCHITECTURE.md)
+- **Live Swagger API Docs**: [Live API Swagger Docs (Vercel)](https://tuition-workspace-api.vercel.app/api/docs)
