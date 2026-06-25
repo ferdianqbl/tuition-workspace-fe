@@ -4,36 +4,25 @@ This document verifies and validates that the frontend React client complies wit
 
 ---
 
-## 1. Requirement Traceability Matrix
+## 1. Requirement & Improvisation Validation Table
 
-Here is how the Next.js App Router frontend implements each section of the technical test:
-
-### A. Users, Auth, and Sessions
-* **Login/Logout Navigation**: Handled inside `<AuthPage />` with visual Register and Login tabs. Clicking "Logout" fires an API call to flush cookies and triggers local query cache invalidation.
-* **Session Expiry Handling**: An Axios response interceptor monitors all responses. If any query returns a `401 Unauthorized` status (due to token expiration), the client immediately redirects to the `/` root page and flushes credentials.
-* **Credentials Hashing**: Passed to the backend. The frontend prevents client-side leaks of plain passwords.
-
-### B. Tuition Cases Directory
-* **Creation Form**: `<CreateCaseDialog />` provides a type-safe form using `react-hook-form` to capture title, subject, level, location, and budget.
-* **Browse Directory**: Paginated directory utilizing TanStack React Query `keepPreviousData: true` for smooth transitions. Includes live input filters for `subject`, `level`, and `status`.
-* **Keyword Search**: Uses a debounced input search handler triggering search queries towards the backend.
-
-### C. Row-Level Access Controls
-* **UI Reflections**:
-  - Tutors are presented with a restricted "Invited Cases" list and cannot see the "All Tutors Directory".
-  - Parents are shown case owner tools (e.g. "Invite Tutor" search controls and access list selectors) that are completely hidden from tutor accounts.
-  - Buttons like "Upload Document" are hidden/disabled unless permissions are verified.
-* **Tutor Directory Restriction**: Tutors are blocked from searching or viewing other tutors' profiles. The frontend navbar hides `/tutors` paths for tutors, and any manual access to `/tutors` routes triggers the Layout Guard to render a clean, branded `<ForbiddenScreen />`.
-* **Graceful Refusal (403/401)**: If a user attempts to manually bypass routes or fetches fail, layout guards intercept the responses and render a clean, branded `<ForbiddenScreen />` or `<NotFoundScreen />` rather than a blank page or blank layout crash.
-
-### D. Secure Document Workspace
-* **Upload constraints**: React file input restricts files via `accept=".pdf,.docx,.png,.jpg,.jpeg"`.
-* **Vercel Writeable Storage (/tmp)**: Adapts to Vercel's read-only file systems by utilizing the backend's `/tmp` redirect utility for temporary file streams, ensuring uploads succeed in serverless container runs.
-* **Upload/Download checks**: Uses Axios multipart requests. File download triggers a query that reads the secure stream, catching and displaying custom permission warnings if the backend revokes access.
-
-### E. Tutor Profiles
-* **Tutor Self-Management**: `<ProfilePage />` enables tutors to configure their public display name, qualifications list, and experience milestones.
-* **Parent Search Directory**: Paginated profile cards containing query filters so parents can browse available tutors and select candidate details.
+| Core Requirement Group | Specific Requirement / Improvisation | Code Reference (Files & Functions) | Detailed Flow & Operations | Status |
+| :--- | :--- | :--- | :--- | :---: |
+| **A. Users, Auth, and Sessions** | Login/Register visual UI tabs | [auth-page.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/auth/auth-page.tsx) | Authenticates parents and tutors using a responsive, tab-based authorization view. | `[x] OK` |
+| | Axios Request Interceptor | [axios/index.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/lib/axios/index.tsx#L26) | Automatically pulls the current session token from `localStorage` and appends it to the `Authorization` header on all API calls. | `[x] OK` |
+| | **[Improvisation]** Session expiry interceptor | [axios/index.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/lib/axios/index.tsx#L34) | Listens for `401 Unauthorized` responses, flushes the token, and automatically redirects the browser back to the login screen. | `[x] OK` |
+| | **[Improvisation]** Global API syncing loader | [navbar.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/ui/navbar.tsx#L86) | Resolves `useIsFetching` and `useIsMutating` to show a glowing navbar syncing spinner whenever any query is refetching. | `[x] OK` |
+| **B. Tuition Cases** | Case Creation Dialog | [create-case-dialog.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/cases/components/create-case-dialog.tsx) | Enforces type-safe validation rules on case creation fields (budget, level, location) using `react-hook-form`. | `[x] OK` |
+| | Debounced Keyword Search | [cases-page.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/cases/cases-page.tsx#L27) | Implements custom `useDebounce` hook to delay search calls by 500ms, minimizing redundant backend queries. | `[x] OK` |
+| | Paginated Listings | [cases-page.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/cases/cases-page.tsx#L138) | Restricts case arrays to paginated limit rows and shows responsive controls matching the backend's page limits. | `[x] OK` |
+| **C. Row-Level Access Controls** | Role-based UI guards | [navbar.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/ui/navbar.tsx#L36) | Enforces layout checks to hide navigation links (like Tutor Directory) and editing features from unauthorized roles. | `[x] OK` |
+| | Manual Routing Protection | [layout.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/app/(authenticated)/layout.tsx) | Intercepts navigation attempts. Authenticates tokens before routing and handles errors gracefully. | `[x] OK` |
+| | **[Improvisation]** Graceful Error Screens | [shared/](https://github.com/ferdianqbl/tuition-workspace-fe/tree/main/src/components/shared) | Prevents screen crashes by rendering clean `<ForbiddenScreen />` or `<NotFoundScreen />` cards for `403` or `404` errors. | `[x] OK` |
+| **D. Secure Document Workspace** | File Upload Constraints | [document-workspace.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/cases/components/document-workspace.tsx#L39) | Validates file extensions and limits sizes to 5MB prior to launching Axios multipart form mutations. | `[x] OK` |
+| | Download Streaming trigger | [download-doc.service.ts](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/services/case/download-doc.service.ts) | Triggers standard file downloads dynamically via a virtual link element reading authorization-checked blob streams. | `[x] OK` |
+| | **[Improvisation]** Detailed Upload progress card | [document-workspace.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/cases/components/document-workspace.tsx#L118) | Renders a detailed status container showing filename, size in MB, and extension type during active upload requests. | `[x] OK` |
+| **E. Tutor Profiles** | Profile Edit Forms | [profile-page.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/profile/profile-page.tsx) | Enables tutors to configure display names, work experiences, and credentials, uploading degree sheets securely. | `[x] OK` |
+| | Tutor Directory Search | [tutors-page.tsx](https://github.com/ferdianqbl/tuition-workspace-fe/blob/main/src/components/features/tutors/tutors-page.tsx) | Renders paginated listings of tutors, allowing parents to filter by display name keywords. | `[x] OK` |
 
 ---
 
