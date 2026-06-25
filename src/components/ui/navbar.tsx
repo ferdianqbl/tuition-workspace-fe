@@ -5,15 +5,20 @@ import { useLogout } from "@/services/auth/logout.service";
 import { EUserRole } from "@/types/user.type";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { Sparkles, LogOut, Briefcase, Users, User, LayoutDashboard, Menu, X } from "lucide-react";
+import { Sparkles, LogOut, Briefcase, Users, User, LayoutDashboard, Menu, X, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { getToken } from "@/lib/axios";
 import { Button } from "@/components/ui/button";
+import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 
 export function Navbar() {
   const pathname = usePathname();
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  const isFetching = useIsFetching();
+  const isMutating = useIsMutating();
+  const isGlobalLoading = isFetching > 0 || isMutating > 0;
 
   const { data: meData } = useGetMe({
     enabled: typeof window !== "undefined" && !!getToken(),
@@ -78,6 +83,12 @@ export function Navbar() {
                 Tuition Case Workspace
               </span>
             </Link>
+            {isGlobalLoading && (
+              <div className="flex items-center gap-1 px-2 py-0.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 text-[9px] font-bold text-indigo-400 uppercase tracking-wider animate-pulse">
+                <Loader2 className="w-2.5 h-2.5 animate-spin shrink-0" />
+                Syncing
+              </div>
+            )}
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center gap-1">

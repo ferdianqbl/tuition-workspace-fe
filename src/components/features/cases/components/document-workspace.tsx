@@ -19,6 +19,7 @@ interface DocumentWorkspaceProps {
 export function DocumentWorkspace({ caseId, documents = [], onRefresh }: DocumentWorkspaceProps) {
   const [fileInputRef, setFileInputRef] = useState<HTMLInputElement | null>(null);
   const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null);
+  const [uploadingFile, setUploadingFile] = useState<{ name: string; size: number; type: string } | null>(null);
 
   const uploadDocMutation = useUploadCaseDocument({
     onSuccess: (data) => {
@@ -29,6 +30,9 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
       } else {
         toast.error(data.message || "Failed to upload file");
       }
+    },
+    onSettled: () => {
+      setUploadingFile(null);
     },
   });
 
@@ -50,6 +54,12 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
       toast.error("File is too large. Maximum 5MB.");
       return;
     }
+
+    setUploadingFile({
+      name: file.name,
+      size: file.size,
+      type: file.type || file.name.split(".").pop()?.toUpperCase() || "Unknown",
+    });
 
     uploadDocMutation.mutate({ caseId, file });
   };
@@ -105,7 +115,24 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
       <CardContent className="p-0">
         {/* Document List */}
         <div className="space-y-3">
-          {documents.length === 0 ? (
+          {uploadDocMutation.isPending && uploadingFile && (
+            <div className="flex items-center justify-between p-4 rounded-xl bg-neutral-900/60 border border-indigo-500/30 text-xs animate-pulse">
+              <div className="flex items-center gap-3 min-w-0">
+                <Loader2 className="w-4 h-4 text-indigo-400 shrink-0 animate-spin" />
+                <div className="min-w-0">
+                  <p className="text-white font-medium truncate" title={uploadingFile.name}>
+                    Uploading: {uploadingFile.name}
+                  </p>
+                  <p className="text-[10px] text-muted-foreground mt-0.5">
+                    Type: {uploadingFile.type} | Size: {(uploadingFile.size / (1024 * 1024)).toFixed(2)} MB
+                  </p>
+                </div>
+              </div>
+              <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Uploading...</span>
+            </div>
+          )}
+
+          {documents.length === 0 && !uploadDocMutation.isPending ? (
             <div className="p-12 text-center border border-dashed border-neutral-850 rounded-2xl text-neutral-500">
               <FileText className="w-8 h-8 mx-auto mb-2 text-neutral-600" />
               <p className="text-xs">No attachments uploaded yet</p>
