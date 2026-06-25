@@ -12,6 +12,14 @@ interface DocumentWorkspaceProps {
     id: string;
     filename: string;
     size: number;
+    mimeType: string;
+    uploadedAt: string;
+    uploadedBy?: {
+      id: string;
+      name: string;
+      username: string;
+      role: string;
+    };
   }>;
   onRefresh: () => void;
 }
@@ -150,7 +158,7 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
                       {doc.filename}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">
-                      {(doc.size / (1024 * 1024)).toFixed(2)} MB
+                      {(doc.size / (1024 * 1024)).toFixed(2)} MB · {doc.mimeType}{doc.uploadedBy ? ` · by ${doc.uploadedBy.name}` : ""}
                     </p>
                   </div>
                 </div>

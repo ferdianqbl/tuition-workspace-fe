@@ -10,6 +10,12 @@ export interface ICaseDocument {
   size: number;
   mimeType: string;
   uploadedAt: string;
+  uploadedBy?: {
+    id: string;
+    name: string;
+    username: string;
+    role: string;
+  };
 }
 
 export interface ICaseAccess {
