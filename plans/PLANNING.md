@@ -6,6 +6,7 @@ This folder contains the UI plans, design guidelines, and routing architectures 
 
 ## 1. Document Index
 
+- **System Architecture**: Read about the rendering pipeline, state caching, and auth flow in [SYSTEM_ARCHITECTURE.md](./SYSTEM_ARCHITECTURE.md).
 - **UI/UX Design System**: Read about colors, typography, roundings, and primitive components in [DESIGN.md](./DESIGN.md).
 
 ---
@@ -26,28 +27,7 @@ Next.js App Router folders serve exclusively as clean routing entrypoints, deleg
 
 ---
 
-## 3. Frontend Architecture Layout
-
-The frontend isolates layout configurations, pages, and components using a clean feature-based layout:
-
-- **`src/app/`**: Next.js routing definitions.
-- **`src/components/features/`**: Folder structures separating components by business feature areas (e.g. `auth/`, `cases/`, `tutors/`). Ensures small files and modular maintainability.
-- **`src/components/shared/`**: Reusable page states (loaders, 404 cards, access denied guards).
-- **`src/components/ui/`**: Styled primitives mapped to Shadcn UI modules (Card, Input, Dialog, Button, Select, Tabs, etc.).
-- **`src/services/`**: API fetching utilities using Axios clients and TanStack React Query mutations/queries.
-- **`src/lib/`**: Network configurations.
-- **`src/types/`**: Type definitions.
-
----
-
-## 4. State Management & Query Cache
-
-- **Server Cache**: Maintained using TanStack Query. Provides request states (`isLoading`, `isPending`, `error`) and automated cache invalidation upon query mutations.
-- **Local Credentials State**: Stores session parameters and access tokens securely in `localStorage` to persist active sessions across page reloads.
-
----
-
-## 5. Vercel Deployment & Environment Settings
+## 3. Vercel Deployment & Environment Settings
 
 - **Framework**: Next.js App Router (built dynamically during Vercel builds).
 - **Environment Variables**:
