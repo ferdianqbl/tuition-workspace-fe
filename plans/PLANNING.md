@@ -41,7 +41,7 @@ Next.js App Router folders serve exclusively as clean routing entrypoints, deleg
 ## 🔗 Cross-Repository References
 
 - **Backend Repository**: [tuition-workspace-api](https://github.com/ferdianqbl/tuition-workspace-api)
-- **Backend Master Plan & ERD**: [be/plans/PLANNING.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PLANNING.md)
-- **Backend API Reference**: [be/plans/API.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/API.md)
-- **Backend System Architecture**: [be/plans/SYSTEM_ARCHITECTURE.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/SYSTEM_ARCHITECTURE.md)
+- **Backend Master Plan & ERD**: [plans/PLANNING.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PLANNING.md)
+- **Backend API Reference**: [plans/API.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/API.md)
+- **Backend System Architecture**: [plans/SYSTEM_ARCHITECTURE.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/SYSTEM_ARCHITECTURE.md)
 - **Live Swagger API Docs**: [Live API Swagger Docs (Vercel)](https://tuition-workspace-api.vercel.app/api/docs)

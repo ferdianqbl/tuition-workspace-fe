@@ -20,10 +20,10 @@ This is the Next.js React frontend client for the Tuition Case Workspace platfor
 - **UI/UX Design System**: Read about colors, typography, roundings, and styled primitives in [plans/DESIGN.md](./plans/DESIGN.md).
 
 ### Connected Backend Documentation (GitHub Absolute Links)
-- **Backend Product Requirement Document**: Read about system scope, roles, and backend requirements in [be/plans/PRD.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PRD.md).
-- **Backend System Architecture**: Read about Express middleware configurations and Supabase/Prisma pooling in [be/plans/SYSTEM_ARCHITECTURE.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/SYSTEM_ARCHITECTURE.md).
-- **Backend API Specs**: Read about endpoint paths, payloads, and response interfaces in [be/plans/API.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/API.md).
-- **Backend Master Plan**: Read about planning roadmaps and the database ERD in [be/plans/PLANNING.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PLANNING.md).
+- **Backend Product Requirement Document**: Read about system scope, roles, and backend requirements in [plans/PRD.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PRD.md).
+- **Backend System Architecture**: Read about Express middleware configurations and Supabase/Prisma pooling in [plans/SYSTEM_ARCHITECTURE.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/SYSTEM_ARCHITECTURE.md).
+- **Backend API Specs**: Read about endpoint paths, payloads, and response interfaces in [plans/API.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/API.md).
+- **Backend Master Plan**: Read about planning roadmaps and the database ERD in [plans/PLANNING.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PLANNING.md).
 
 ---
 

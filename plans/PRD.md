@@ -56,10 +56,10 @@ To ensure the platform is production-ready, we executed the following validation
 
 ### A. Compilation & Syntax Verification
 - **Frontend App Build**:
-  - Command: `npm run build` inside `/fe`
+  - Command: `npm run build`
   - Result: **Passed**. Next.js App Router and TypeScript compile successfully without syntax or type errors.
 - **Backend API Build**:
-  - Command: `npm run build` inside `/be`
+  - Command: `npm run build`
   - Result: **Passed**. Resolves tsconfig path aliases (`@/`) to relative imports and successfully outputs to clean CommonJS.
 
 ### B. Integration & CORS Verification
@@ -73,6 +73,6 @@ To ensure the platform is production-ready, we executed the following validation
 ## 🔗 Cross-Repository References
 
 - **Backend Repository**: [tuition-workspace-api](https://github.com/ferdianqbl/tuition-workspace-api)
-- **Backend PRD Document**: [be/plans/PRD.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PRD.md)
+- **Backend PRD Document**: [plans/PRD.md](https://github.com/ferdianqbl/tuition-workspace-api/blob/main/plans/PRD.md)
 - **Frontend Repository**: [tuition-workspace-fe](https://github.com/ferdianqbl/tuition-workspace-fe)
 - **Live Frontend Client**: [Live Web App (Vercel)](https://tuition-workspace-fe.vercel.app/)
