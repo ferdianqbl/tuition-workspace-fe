@@ -62,7 +62,9 @@ export function CasesPage() {
             Tuition Cases Workspace
           </h1>
           <p className="text-xs text-neutral-400 mt-1.5">
-            {isParent
+            {user.role === EUserRole.ADMIN
+              ? "Administrator panel to view and audit all tuition marketplace cases."
+              : isParent
               ? "Manage, create, and invite tutors to handle your private tuition needs."
               : "List of private tuition case offers where you have been invited by parents."}
           </p>
@@ -161,7 +163,9 @@ export function CasesPage() {
         <NotFoundCard
           title="No Cases Found"
           description={
-            isParent
+            user.role === EUserRole.ADMIN
+              ? "There are no cases in the database matching your filters."
+              : isParent
               ? "You have not created any cases yet or no cases match your filters."
               : "You do not have any active private tuition case invitations yet."
           }
