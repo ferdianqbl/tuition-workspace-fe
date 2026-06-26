@@ -25,10 +25,10 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
   const [tutorSearch, setTutorSearch] = useState("");
   const debouncedTutorSearch = useDebounce(tutorSearch, 500);
 
-  const { data: searchTutorsData } = useGetAllTutors(
+  const { data: searchTutorsData, isFetching } = useGetAllTutors(
     {
       search: debouncedTutorSearch || undefined,
-      limit: 5,
+      limit: 10,
     },
     {
       enabled: debouncedTutorSearch.length > 0,
@@ -74,7 +74,7 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
   );
 
   return (
-    <Card className="border-border/40 bg-card/65 rounded-3xl p-6 space-y-6">
+    <Card className="border-border/40 bg-card/65 rounded-3xl p-6 space-y-6 !overflow-visible">
       <CardHeader className="pb-4 p-0">
         <CardTitle className="text-base font-bold text-white flex items-center gap-2">
           <Shield className="w-5 h-5 text-indigo-400" />
@@ -98,8 +98,13 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
 
           {/* Autocomplete List */}
           {tutorSearch.length > 0 && (
-            <div className="absolute top-11 left-0 z-20 w-full bg-neutral-950 border border-neutral-800 rounded-xl overflow-hidden shadow-2xl">
-              {inviteableTutors.length === 0 ? (
+            <div className="absolute top-11 left-0 z-20 w-full bg-neutral-950 border border-neutral-800 rounded-xl max-h-48 overflow-y-auto shadow-2xl">
+              {isFetching ? (
+                <div className="flex items-center justify-center p-3 text-xs text-neutral-400 gap-2">
+                  <Loader2 className="w-3.5 h-3.5 animate-spin text-indigo-400 shrink-0" />
+                  <span>Searching tutors...</span>
+                </div>
+              ) : inviteableTutors.length === 0 ? (
                 <p className="p-3 text-[10px] text-neutral-500 italic text-center">Tutor not found</p>
               ) : (
                 inviteableTutors.map((tutor) => (
@@ -112,7 +117,7 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
                       size="icon"
                       variant="ghost"
                       onClick={() => handleInviteTutor(tutor.userId)}
-                      className="w-7 h-7 rounded bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white transition-all border border-indigo-500/20"
+                      className="w-7 h-7 rounded bg-indigo-500/10 hover:bg-indigo-500 text-indigo-400 hover:text-white transition-all border border-indigo-500/20 shrink-0"
                       title="Invite"
                     >
                       <Plus className="w-3.5 h-3.5" />
