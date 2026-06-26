@@ -20,17 +20,23 @@ export function CasesPage() {
 
   // Search/Filters states
   const [search, setSearch] = useState("");
+  const [subjectFilter, setSubjectFilter] = useState("");
+  const [levelFilter, setLevelFilter] = useState("");
   const [statusFilter, setStatusFilter] = useState<ECaseStatus | "ALL">("ALL");
   const [page, setPage] = useState(1);
   const limit = 6;
 
   const debouncedSearch = useDebounce(search, 500);
+  const debouncedSubject = useDebounce(subjectFilter, 500);
+  const debouncedLevel = useDebounce(levelFilter, 500);
 
   const filterParams = {
     page,
     limit,
     search: debouncedSearch || undefined,
     status: statusFilter === "ALL" ? undefined : statusFilter,
+    subject: debouncedSubject || undefined,
+    level: debouncedLevel || undefined,
   };
 
   const { data: casesData, isLoading, refetch } = useGetAllCases(filterParams, {
@@ -75,40 +81,76 @@ export function CasesPage() {
       </div>
 
       {/* Filters and Search Bar */}
-      <div className="flex flex-col sm:flex-row items-center gap-4 bg-neutral-900/60 p-4 border border-neutral-855 rounded-2xl">
-        <div className="relative w-full sm:flex-1">
-          <Input
-            type="text"
-            value={search}
-            onChange={(e) => {
-              setSearch(e.target.value);
-              setPage(1);
-            }}
-            placeholder="Search case titles..."
-            className="pl-10 h-10 rounded-xl"
-          />
-          <Search className="absolute left-3.5 top-3 w-4 h-4 text-neutral-500" />
-        </div>
-
-        {/* Status Filter */}
-        <div className="flex gap-1 bg-neutral-950 p-1.5 rounded-xl border border-neutral-800 w-full sm:w-auto shrink-0">
-          {(["ALL", ECaseStatus.OPEN, ECaseStatus.MATCHED, ECaseStatus.CLOSED] as const).map((status) => (
-            <Button
-              key={status}
-              variant="ghost"
-              onClick={() => {
-                setStatusFilter(status);
+      <div className="flex flex-col gap-4 bg-neutral-900/60 p-4 border border-neutral-855 rounded-2xl">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 w-full">
+          {/* Keyword Search */}
+          <div className="relative w-full">
+            <Input
+              type="text"
+              value={search}
+              onChange={(e) => {
+                setSearch(e.target.value);
                 setPage(1);
               }}
-              className={`flex-1 sm:flex-none h-8 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all hover:bg-neutral-850 hover:text-white ${
-                statusFilter === status
-                  ? "bg-neutral-800 text-white"
-                  : "text-muted-foreground"
-              }`}
-            >
-              {status}
-            </Button>
-          ))}
+              placeholder="Search case titles..."
+              className="pl-10 h-10 rounded-xl"
+            />
+            <Search className="absolute left-3.5 top-3 w-4 h-4 text-neutral-500" />
+          </div>
+
+          {/* Subject Filter */}
+          <div className="relative w-full">
+            <Input
+              type="text"
+              value={subjectFilter}
+              onChange={(e) => {
+                setSubjectFilter(e.target.value);
+                setPage(1);
+              }}
+              placeholder="Filter by subject..."
+              className="h-10 rounded-xl"
+            />
+          </div>
+
+          {/* Level Filter */}
+          <div className="relative w-full">
+            <Input
+              type="text"
+              value={levelFilter}
+              onChange={(e) => {
+                setLevelFilter(e.target.value);
+                setPage(1);
+              }}
+              placeholder="Filter by level..."
+              className="h-10 rounded-xl"
+            />
+          </div>
+        </div>
+
+        {/* Status Filter Row */}
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2 border-t border-neutral-850/50">
+          <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+            Case Status
+          </span>
+          <div className="flex gap-1 bg-neutral-950 p-1.5 rounded-xl border border-neutral-800 w-full sm:w-auto shrink-0">
+            {(["ALL", ECaseStatus.OPEN, ECaseStatus.MATCHED, ECaseStatus.CLOSED] as const).map((status) => (
+              <Button
+                key={status}
+                variant="ghost"
+                onClick={() => {
+                  setStatusFilter(status);
+                  setPage(1);
+                }}
+                className={`flex-1 sm:flex-none h-8 px-3 rounded-lg text-[10px] font-bold uppercase tracking-wider transition-all hover:bg-neutral-850 hover:text-white ${
+                  statusFilter === status
+                    ? "bg-neutral-800 text-white"
+                    : "text-muted-foreground"
+                }`}
+              >
+                {status}
+              </Button>
+            ))}
+          </div>
         </div>
       </div>
 
