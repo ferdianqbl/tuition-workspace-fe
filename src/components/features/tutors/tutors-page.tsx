@@ -65,15 +65,15 @@ export function TutorsPage() {
         </div>
 
         {/* Search Input */}
-        <div className="relative w-full md:w-80">
+        <div className="relative w-full md:w-96">
           <Input
             type="text"
             value={search}
             onChange={handleSearchChange}
-            placeholder="Search tutor name..."
-            className="pl-10 h-10 rounded-xl"
+            placeholder="Search by name, qualification, or experience..."
+            className="pl-10 h-10 rounded-xl text-xs"
           />
-          <Search className="absolute left-3.5 top-3.5 w-4 h-4 text-neutral-500" />
+          <Search className="absolute left-3.5 top-3 w-4 h-4 text-neutral-500" />
         </div>
       </div>
 
