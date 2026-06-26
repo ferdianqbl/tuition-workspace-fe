@@ -1,7 +1,8 @@
 import { useState } from "react";
 import { useUploadTutorDocument } from "@/services/tutor/upload-doc.service";
 import { useDeleteTutorDocument } from "@/services/tutor/delete-doc.service";
-import { FileText, Trash2, Upload, Loader2 } from "lucide-react";
+import { DownloadTutorDocumentService, triggerTutorFileDownload } from "@/services/tutor/download-doc.service";
+import { FileText, Trash2, Upload, Loader2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
@@ -19,6 +20,20 @@ interface DocumentListProps {
 
 export function DocumentList({ profile, onRefresh }: DocumentListProps) {
   const [fileInputRef, setFileInputRef] = useState<HTMLInputElement | null>(null);
+  const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null);
+
+  const handleFileDownload = async (docId: string, filename: string) => {
+    try {
+      setDownloadingDocId(docId);
+      const blob = await DownloadTutorDocumentService(docId);
+      triggerTutorFileDownload(blob, filename);
+      toast.success("Download started!");
+    } catch {
+      toast.error("Failed to download document");
+    } finally {
+      setDownloadingDocId(null);
+    }
+  };
 
   const uploadMutation = useUploadTutorDocument({
     onSuccess: (data) => {
@@ -99,16 +114,32 @@ export function DocumentList({ profile, onRefresh }: DocumentListProps) {
                   </p>
                 </div>
               </div>
-              <Button
-                variant="ghost"
-                size="icon"
-                onClick={() => handleDeleteDoc(doc.id)}
-                disabled={isDeleting}
-                className="w-8 h-8 rounded-lg text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10 transition-all"
-                title="Delete"
-              >
-                <Trash2 className="w-3.5 h-3.5" />
-              </Button>
+              <div className="flex items-center gap-1.5 shrink-0">
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleFileDownload(doc.id, doc.filename)}
+                  disabled={downloadingDocId === doc.id}
+                  className="w-8 h-8 rounded-lg text-muted-foreground hover:text-indigo-400 hover:bg-indigo-500/10 transition-all"
+                  title="Download"
+                >
+                  {downloadingDocId === doc.id ? (
+                    <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                  ) : (
+                    <Download className="w-3.5 h-3.5 text-indigo-400" />
+                  )}
+                </Button>
+                <Button
+                  variant="ghost"
+                  size="icon"
+                  onClick={() => handleDeleteDoc(doc.id)}
+                  disabled={isDeleting}
+                  className="w-8 h-8 rounded-lg text-muted-foreground hover:text-rose-400 hover:bg-rose-500/10 transition-all"
+                  title="Delete"
+                >
+                  <Trash2 className="w-3.5 h-3.5" />
+                </Button>
+              </div>
             </div>
           ))
         )}

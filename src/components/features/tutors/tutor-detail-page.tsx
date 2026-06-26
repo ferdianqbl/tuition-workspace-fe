@@ -1,13 +1,15 @@
-import { use } from "react";
+import { use, useState } from "react";
 import { useGetMe } from "@/services/auth/get-me.service";
 import { useGetTutorById } from "@/services/tutor/get-by-id.service";
 import { EUserRole } from "@/types/user.type";
 import Link from "next/link";
-import { ArrowLeft, FileText, Sparkles, GraduationCap, BookOpen, AlertCircle } from "lucide-react";
+import { ArrowLeft, FileText, Sparkles, GraduationCap, BookOpen, AlertCircle, Download, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { ForbiddenCard } from "@/components/shared/forbidden-card";
 import { LoadingScreen } from "@/components/shared/loading-screen";
+import { DownloadTutorDocumentService, triggerTutorFileDownload } from "@/services/tutor/download-doc.service";
+import { toast } from "sonner";
 
 interface TutorDetailPageProps {
   params: Promise<{ id: string }>;
@@ -17,6 +19,20 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
   const { id } = use(params);
   const { data: meData } = useGetMe();
   const user = meData?.data;
+  const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null);
+
+  const handleFileDownload = async (docId: string, filename: string) => {
+    try {
+      setDownloadingDocId(docId);
+      const blob = await DownloadTutorDocumentService(docId);
+      triggerTutorFileDownload(blob, filename);
+      toast.success("Download started!");
+    } catch {
+      toast.error("Failed to download document");
+    } finally {
+      setDownloadingDocId(null);
+    }
+  };
 
   // Authorization: Parents and Admins only (tutors cannot view other tutors)
   const isAuthorized = user?.role === EUserRole.PARENT || user?.role === EUserRole.ADMIN;
@@ -151,19 +167,36 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profile.documents.map((doc) => (
-                  <div
+                   <div
                     key={doc.id}
-                    className="flex items-center gap-3 p-3.5 rounded-xl bg-neutral-950/60 border border-neutral-850 text-xs"
+                    className="flex items-center justify-between p-3.5 rounded-xl bg-neutral-950/60 border border-neutral-850 text-xs hover:border-neutral-700 transition-all"
                   >
-                    <FileText className="w-5 h-5 text-indigo-400 shrink-0" />
-                    <div className="min-w-0">
-                      <p className="text-white font-medium truncate" title={doc.filename}>
-                        {doc.filename}
-                      </p>
-                      <p className="text-[10px] text-neutral-500 mt-0.5">
-                        {(doc.size / (1024 * 1024)).toFixed(2)} MB
-                      </p>
+                    <div className="flex items-center gap-3 min-w-0">
+                      <FileText className="w-5 h-5 text-indigo-400 shrink-0" />
+                      <div className="min-w-0">
+                        <p className="text-white font-medium truncate" title={doc.filename}>
+                          {doc.filename}
+                        </p>
+                        <p className="text-[10px] text-neutral-500 mt-0.5">
+                          {(doc.size / (1024 * 1024)).toFixed(2)} MB
+                        </p>
+                      </div>
                     </div>
+
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      onClick={() => handleFileDownload(doc.id, doc.filename)}
+                      disabled={downloadingDocId === doc.id}
+                      className="w-8 h-8 rounded-lg text-muted-foreground hover:text-indigo-400 hover:bg-indigo-500/10 transition-all shrink-0"
+                      title="Download"
+                    >
+                      {downloadingDocId === doc.id ? (
+                        <Loader2 className="w-3.5 h-3.5 animate-spin" />
+                      ) : (
+                        <Download className="w-3.5 h-3.5 text-indigo-400" />
+                      )}
+                    </Button>
                   </div>
                 ))}
               </div>
