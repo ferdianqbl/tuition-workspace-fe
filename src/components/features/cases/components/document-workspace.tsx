@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useUploadCaseDocument } from "@/services/case/upload-doc.service";
 import { DownloadCaseDocumentService, triggerFileDownload } from "@/services/case/download-doc.service";
 import { FileText, Loader2, Upload, Download } from "lucide-react";
@@ -25,7 +25,7 @@ interface DocumentWorkspaceProps {
 }
 
 export function DocumentWorkspace({ caseId, documents = [], onRefresh }: DocumentWorkspaceProps) {
-  const [fileInputRef, setFileInputRef] = useState<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null);
   const [uploadingFile, setUploadingFile] = useState<{ name: string; size: number; type: string } | null>(null);
 
@@ -33,7 +33,7 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
     onSuccess: (data) => {
       if (data.success) {
         toast.success("File uploaded successfully to this case!");
-        if (fileInputRef) fileInputRef.value = "";
+        if (fileInputRef.current) fileInputRef.current.value = "";
         onRefresh();
       } else {
         toast.error(data.message || "Failed to upload file");
@@ -101,7 +101,7 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
             id="case-doc-upload"
             className="hidden"
             onChange={handleFileUpload}
-            ref={(ref) => setFileInputRef(ref)}
+            ref={fileInputRef}
             disabled={uploadDocMutation.isPending}
           />
           <label
