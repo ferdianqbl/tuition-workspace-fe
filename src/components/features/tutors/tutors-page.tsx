@@ -21,8 +21,9 @@ export function TutorsPage() {
   const { data: meData } = useGetMe();
   const user = meData?.data;
 
-  // Authorization: Only Parents (and Admins) can search tutor directory
-  const isParent = user?.role === EUserRole.PARENT;
+  // Authorization: Only Parents and Admins can search tutor directory
+  const isAuthorized =
+    user?.role === EUserRole.PARENT || user?.role === EUserRole.ADMIN;
 
   const [search, setSearch] = useState("");
   const [page, setPage] = useState(1);
@@ -37,13 +38,13 @@ export function TutorsPage() {
       search: debouncedSearch,
     },
     {
-      enabled: !!isParent,
+      enabled: !!isAuthorized,
     },
   );
 
-  if (!isParent) {
+  if (!isAuthorized) {
     return (
-      <ForbiddenCard message="Only users with the Parent role are authorized to browse the tutor directory." />
+      <ForbiddenCard message="Only parents and system administrators are authorized to browse the tutor directory." />
     );
   }
 

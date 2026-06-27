@@ -49,7 +49,7 @@ export function Navbar() {
       name: "Tutor Directory",
       href: "/tutors",
       icon: Users,
-      show: isParent,
+      show: isParent || user.role === EUserRole.ADMIN,
     },
     {
       name: "Tuition Cases",
