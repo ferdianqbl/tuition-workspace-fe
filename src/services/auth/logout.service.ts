@@ -1,8 +1,8 @@
 import { baseApi, removeToken } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetMeKey } from "./get-me.service";
 
 export async function LogoutService(): Promise<IResponse<null>> {

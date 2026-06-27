@@ -1,14 +1,21 @@
-import { useState } from "react";
+import { LoadingScreen } from "@/components/shared/loading-screen";
+import { NotFoundCard } from "@/components/shared/not-found-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useGetMe } from "@/services/auth/get-me.service";
 import { useGetAllCases } from "@/services/case/get-all.service";
 import { ECaseStatus } from "@/types/case.type";
 import { EUserRole } from "@/types/user.type";
-import { useDebounce } from "@/hooks/use-debounce";
-import { Search, ChevronLeft, ChevronRight, Briefcase, Sparkles, Plus } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { LoadingScreen } from "@/components/shared/loading-screen";
-import { NotFoundCard } from "@/components/shared/not-found-card";
+import {
+  Briefcase,
+  ChevronLeft,
+  ChevronRight,
+  Plus,
+  Search,
+  Sparkles,
+} from "lucide-react";
+import { useState } from "react";
 import { CaseCard } from "./components/case-card";
 import { CreateCaseDialog } from "./components/create-case-dialog";
 
@@ -39,7 +46,11 @@ export function CasesPage() {
     level: debouncedLevel || undefined,
   };
 
-  const { data: casesData, isLoading, refetch } = useGetAllCases(filterParams, {
+  const {
+    data: casesData,
+    isLoading,
+    refetch,
+  } = useGetAllCases(filterParams, {
     enabled: !!user,
   });
 
@@ -65,8 +76,8 @@ export function CasesPage() {
             {user.role === EUserRole.ADMIN
               ? "Administrator panel to view and audit all tuition marketplace cases."
               : isParent
-              ? "Manage, create, and invite tutors to handle your private tuition needs."
-              : "List of private tuition case offers where you have been invited by parents."}
+                ? "Manage, create, and invite tutors to handle your private tuition needs."
+                : "List of private tuition case offers where you have been invited by parents."}
           </p>
         </div>
 
@@ -135,7 +146,14 @@ export function CasesPage() {
             Case Status
           </span>
           <div className="flex gap-1 bg-neutral-950 p-1.5 rounded-xl border border-neutral-800 w-full sm:w-auto shrink-0">
-            {(["ALL", ECaseStatus.OPEN, ECaseStatus.MATCHED, ECaseStatus.CLOSED] as const).map((status) => (
+            {(
+              [
+                "ALL",
+                ECaseStatus.OPEN,
+                ECaseStatus.MATCHED,
+                ECaseStatus.CLOSED,
+              ] as const
+            ).map((status) => (
               <Button
                 key={status}
                 variant="ghost"
@@ -166,8 +184,8 @@ export function CasesPage() {
             user.role === EUserRole.ADMIN
               ? "There are no cases in the database matching your filters."
               : isParent
-              ? "You have not created any cases yet or no cases match your filters."
-              : "You do not have any active private tuition case invitations yet."
+                ? "You have not created any cases yet or no cases match your filters."
+                : "You do not have any active private tuition case invitations yet."
           }
           icon={Briefcase}
         />

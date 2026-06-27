@@ -1,10 +1,4 @@
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useRegister } from "@/services/auth/register.service";
-import { EUserRole } from "@/types/user.type";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Form,
   FormControl,
@@ -13,8 +7,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useRegister } from "@/services/auth/register.service";
+import { EUserRole } from "@/types/user.type";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import * as z from "zod";
 
 const registerSchema = z.object({
   name: z
@@ -136,7 +136,9 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
                 <div className="grid grid-cols-2 gap-3">
                   <Button
                     type="button"
-                    variant={field.value === EUserRole.PARENT ? "default" : "outline"}
+                    variant={
+                      field.value === EUserRole.PARENT ? "default" : "outline"
+                    }
                     onClick={() => field.onChange(EUserRole.PARENT)}
                     className={`rounded-xl text-xs font-semibold ${
                       field.value === EUserRole.PARENT
@@ -148,7 +150,9 @@ export function RegisterForm({ onRegisterSuccess }: RegisterFormProps) {
                   </Button>
                   <Button
                     type="button"
-                    variant={field.value === EUserRole.TUTOR ? "default" : "outline"}
+                    variant={
+                      field.value === EUserRole.TUTOR ? "default" : "outline"
+                    }
                     onClick={() => field.onChange(EUserRole.TUTOR)}
                     className={`rounded-xl text-xs font-semibold ${
                       field.value === EUserRole.TUTOR

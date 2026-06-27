@@ -1,9 +1,18 @@
-import { useState, useRef } from "react";
-import { useUploadCaseDocument } from "@/services/case/upload-doc.service";
-import { DownloadCaseDocumentService, triggerFileDownload } from "@/services/case/download-doc.service";
-import { FileText, Loader2, Upload, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  DownloadCaseDocumentService,
+  triggerFileDownload,
+} from "@/services/case/download-doc.service";
+import { useUploadCaseDocument } from "@/services/case/upload-doc.service";
+import { Download, FileText, Loader2, Upload } from "lucide-react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface DocumentWorkspaceProps {
@@ -24,10 +33,18 @@ interface DocumentWorkspaceProps {
   onRefresh: () => void;
 }
 
-export function DocumentWorkspace({ caseId, documents = [], onRefresh }: DocumentWorkspaceProps) {
+export function DocumentWorkspace({
+  caseId,
+  documents = [],
+  onRefresh,
+}: DocumentWorkspaceProps) {
   const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null);
-  const [uploadingFile, setUploadingFile] = useState<{ name: string; size: number; type: string } | null>(null);
+  const [uploadingFile, setUploadingFile] = useState<{
+    name: string;
+    size: number;
+    type: string;
+  } | null>(null);
 
   const uploadDocMutation = useUploadCaseDocument({
     onSuccess: (data) => {
@@ -88,7 +105,9 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
     <Card className="border-border/40 bg-card/65 rounded-3xl p-6 md:p-8 space-y-6">
       <CardHeader className="pb-4 p-0 border-b border-neutral-800 flex flex-row items-center justify-between">
         <div>
-          <CardTitle className="text-base font-bold text-white">Learning Materials & Attachments</CardTitle>
+          <CardTitle className="text-base font-bold text-white">
+            Learning Materials & Attachments
+          </CardTitle>
           <CardDescription className="text-[10px]">
             Upload assignments, worksheets, or sample papers.
           </CardDescription>
@@ -107,7 +126,9 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
           <label
             htmlFor="case-doc-upload"
             className={`inline-flex items-center gap-1.5 py-2 px-4 rounded-xl bg-neutral-950/60 border border-neutral-850 hover:border-neutral-750 text-xs font-semibold text-neutral-300 hover:text-white cursor-pointer transition-all ${
-              uploadDocMutation.isPending ? "opacity-50 pointer-events-none" : ""
+              uploadDocMutation.isPending
+                ? "opacity-50 pointer-events-none"
+                : ""
             }`}
           >
             {uploadDocMutation.isPending ? (
@@ -128,15 +149,21 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
               <div className="flex items-center gap-3 min-w-0">
                 <Loader2 className="w-4 h-4 text-indigo-400 shrink-0 animate-spin" />
                 <div className="min-w-0">
-                  <p className="text-white font-medium truncate" title={uploadingFile.name}>
+                  <p
+                    className="text-white font-medium truncate"
+                    title={uploadingFile.name}
+                  >
                     Uploading: {uploadingFile.name}
                   </p>
                   <p className="text-[10px] text-muted-foreground mt-0.5">
-                    Type: {uploadingFile.type} | Size: {(uploadingFile.size / (1024 * 1024)).toFixed(2)} MB
+                    Type: {uploadingFile.type} | Size:{" "}
+                    {(uploadingFile.size / (1024 * 1024)).toFixed(2)} MB
                   </p>
                 </div>
               </div>
-              <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">Uploading...</span>
+              <span className="text-[10px] font-bold text-indigo-400 uppercase tracking-wider">
+                Uploading...
+              </span>
             </div>
           )}
 
@@ -154,11 +181,16 @@ export function DocumentWorkspace({ caseId, documents = [], onRefresh }: Documen
                 <div className="flex items-center gap-3 min-w-0">
                   <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
                   <div className="min-w-0">
-                    <p className="text-white font-medium truncate" title={doc.filename}>
+                    <p
+                      className="text-white font-medium truncate"
+                      title={doc.filename}
+                    >
                       {doc.filename}
                     </p>
                     <p className="text-[10px] text-muted-foreground mt-0.5">
-                      {(doc.size / (1024 * 1024)).toFixed(2)} MB · {doc.mimeType}{doc.uploadedBy ? ` · by ${doc.uploadedBy.name}` : ""}
+                      {(doc.size / (1024 * 1024)).toFixed(2)} MB ·{" "}
+                      {doc.mimeType}
+                      {doc.uploadedBy ? ` · by ${doc.uploadedBy.name}` : ""}
                     </p>
                   </div>
                 </div>

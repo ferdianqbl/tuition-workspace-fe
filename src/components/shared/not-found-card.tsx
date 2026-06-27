@@ -1,5 +1,5 @@
-import { LucideIcon } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
+import { LucideIcon } from "lucide-react";
 
 interface NotFoundCardProps {
   title: string;
@@ -7,7 +7,11 @@ interface NotFoundCardProps {
   icon?: LucideIcon;
 }
 
-export function NotFoundCard({ title, description, icon: Icon }: NotFoundCardProps) {
+export function NotFoundCard({
+  title,
+  description,
+  icon: Icon,
+}: NotFoundCardProps) {
   return (
     <Card className="border-border/40 bg-card/65 flex flex-col items-center justify-center p-16 text-center rounded-3xl">
       <CardContent className="flex flex-col items-center p-0">

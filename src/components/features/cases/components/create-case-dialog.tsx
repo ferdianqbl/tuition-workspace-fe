@@ -1,20 +1,4 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useCreateCase } from "@/services/case/create.service";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -23,21 +7,31 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { useCreateCase } from "@/services/case/create.service";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const caseSchema = z.object({
   title: z
     .string()
     .min(1, { message: "Case Title is required" })
     .min(5, { message: "Case Title must be at least 5 characters" }),
-  subject: z
-    .string()
-    .min(1, { message: "Subject is required" }),
-  level: z
-    .string()
-    .min(1, { message: "Education Level is required" }),
-  location: z
-    .string()
-    .min(1, { message: "Location is required" }),
+  subject: z.string().min(1, { message: "Subject is required" }),
+  level: z.string().min(1, { message: "Education Level is required" }),
+  location: z.string().min(1, { message: "Location is required" }),
   budgetPerHour: z
     .number({ message: "Budget must be a positive number" })
     .positive({ message: "Budget must be a positive number greater than 0" }),
@@ -51,7 +45,11 @@ interface CreateCaseDialogProps {
   onSuccess: () => void;
 }
 
-export function CreateCaseDialog({ isOpen, onOpenChange, onSuccess }: CreateCaseDialogProps) {
+export function CreateCaseDialog({
+  isOpen,
+  onOpenChange,
+  onSuccess,
+}: CreateCaseDialogProps) {
   const createCaseMutation = useCreateCase({
     onSuccess: (data) => {
       if (data.success) {
@@ -99,14 +97,19 @@ export function CreateCaseDialog({ isOpen, onOpenChange, onSuccess }: CreateCase
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg bg-neutral-900 border-neutral-800 text-white rounded-3xl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-white">Create New Tuition Case</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-white">
+            Create New Tuition Case
+          </DialogTitle>
           <DialogDescription className="text-xs text-neutral-400">
             Complete the form below to post your private tuition offer.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 py-2"
+          >
             <FormField
               control={form.control}
               name="title"
@@ -208,7 +211,11 @@ export function CreateCaseDialog({ isOpen, onOpenChange, onSuccess }: CreateCase
                         placeholder="e.g. 80"
                         className="pl-8 rounded-xl bg-neutral-950 border-neutral-800 text-white placeholder-neutral-600 focus:border-indigo-500 focus:ring-indigo-500/20"
                         {...field}
-                        onChange={(e) => field.onChange(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === "" ? "" : Number(e.target.value),
+                          )
+                        }
                       />
                       <span className="absolute left-3 top-2.5 text-xs font-semibold text-neutral-500">
                         $
@@ -234,7 +241,9 @@ export function CreateCaseDialog({ isOpen, onOpenChange, onSuccess }: CreateCase
                 disabled={isPending}
                 className="rounded-xl text-xs font-bold px-6 shadow-lg bg-indigo-600 hover:bg-indigo-500 text-white border-none"
               >
-                {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" />}
+                {isPending && (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" />
+                )}
                 Post Case
               </Button>
             </DialogFooter>

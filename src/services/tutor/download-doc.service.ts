@@ -1,6 +1,8 @@
 import { baseApi } from "@/lib/axios";
 
-export async function DownloadTutorDocumentService(docId: string): Promise<Blob> {
+export async function DownloadTutorDocumentService(
+  docId: string,
+): Promise<Blob> {
   const { data } = await baseApi.get<Blob>(`/tutors/documents/${docId}`, {
     responseType: "blob",
   });

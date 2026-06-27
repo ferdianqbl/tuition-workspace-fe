@@ -1,9 +1,9 @@
 import { baseApi } from "@/lib/axios";
+import type { TQueryConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { IUser } from "@/types/user.type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { TQueryConfig } from "@/lib/react-query";
 
 export const GetMeKey = "GetMe";
 

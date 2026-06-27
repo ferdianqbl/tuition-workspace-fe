@@ -1,10 +1,5 @@
-import { useState } from "react";
-import { useUpdateCase } from "@/services/case/update.service";
-import { ECaseStatus } from "@/types/case.type";
-import { BookOpen, MapPin, DollarSign, Pencil } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EditCaseDialog } from "./edit-case-dialog";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   Select,
   SelectContent,
@@ -12,7 +7,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { useUpdateCase } from "@/services/case/update.service";
+import { ECaseStatus } from "@/types/case.type";
+import { BookOpen, DollarSign, MapPin, Pencil } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { EditCaseDialog } from "./edit-case-dialog";
 
 interface CaseDetailsCardProps {
   tcase: {
@@ -28,7 +28,11 @@ interface CaseDetailsCardProps {
   onRefresh: () => void;
 }
 
-export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardProps) {
+export function CaseDetailsCard({
+  tcase,
+  isOwner,
+  onRefresh,
+}: CaseDetailsCardProps) {
   const [isEditOpen, setIsEditOpen] = useState(false);
 
   const updateCaseMutation = useUpdateCase({
@@ -43,7 +47,10 @@ export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardPr
   });
 
   const handleStatusChange = (status: string) => {
-    updateCaseMutation.mutate({ id: tcase.id, payload: { status: status as ECaseStatus } });
+    updateCaseMutation.mutate({
+      id: tcase.id,
+      payload: { status: status as ECaseStatus },
+    });
   };
 
   return (
@@ -55,7 +62,9 @@ export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardPr
               <span className="text-[10px] font-bold uppercase tracking-wider text-indigo-400 bg-indigo-500/10 px-2.5 py-0.5 rounded-md border border-indigo-500/15">
                 Tuition Case Details
               </span>
-              <h1 className="text-xl font-bold text-white mt-2">{tcase.title}</h1>
+              <h1 className="text-xl font-bold text-white mt-2">
+                {tcase.title}
+              </h1>
             </div>
 
             {/* Status Indicator & Edit details */}
@@ -89,8 +98,8 @@ export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardPr
                     tcase.status === ECaseStatus.OPEN
                       ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                       : tcase.status === ECaseStatus.MATCHED
-                      ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-                      : "bg-neutral-850 text-neutral-500 border border-neutral-800"
+                        ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                        : "bg-neutral-850 text-neutral-500 border border-neutral-800"
                   }`}
                 >
                   {tcase.status}
@@ -102,7 +111,9 @@ export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardPr
           {/* Parameter Details */}
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
             <div className="p-4 bg-neutral-950/40 rounded-2xl border border-neutral-850">
-              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Subject</span>
+              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+                Subject
+              </span>
               <p className="text-xs text-white font-semibold mt-1 flex items-center gap-1.5">
                 <BookOpen className="w-3.5 h-3.5 text-indigo-400" />
                 {tcase.subject}
@@ -110,14 +121,18 @@ export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardPr
             </div>
 
             <div className="p-4 bg-neutral-950/40 rounded-2xl border border-neutral-850">
-              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Education Level</span>
+              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+                Education Level
+              </span>
               <p className="text-xs text-white font-semibold mt-1">
                 {tcase.level}
               </p>
             </div>
 
             <div className="p-4 bg-neutral-950/40 rounded-2xl border border-neutral-850">
-              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Location</span>
+              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+                Location
+              </span>
               <p className="text-xs text-white font-semibold mt-1 flex items-center gap-1.5 truncate">
                 <MapPin className="w-3.5 h-3.5 text-indigo-400" />
                 {tcase.location}
@@ -125,7 +140,9 @@ export function CaseDetailsCard({ tcase, isOwner, onRefresh }: CaseDetailsCardPr
             </div>
 
             <div className="p-4 bg-neutral-950/40 rounded-2xl border border-neutral-850">
-              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">Rate per Hour</span>
+              <span className="text-[10px] text-neutral-500 font-bold uppercase tracking-wider">
+                Rate per Hour
+              </span>
               <p className="text-xs text-white font-semibold mt-1 flex items-center gap-1">
                 <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
                 Rp {tcase.budgetPerHour.toLocaleString("id-ID")}

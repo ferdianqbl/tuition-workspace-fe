@@ -1,7 +1,7 @@
-import Link from "next/link";
-import { GraduationCap, BookOpen } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
+import { BookOpen, GraduationCap } from "lucide-react";
+import Link from "next/link";
 
 interface TutorCardProps {
   profile: {
@@ -58,10 +58,12 @@ export function TutorCard({ profile }: TutorCardProps) {
         </div>
       </div>
 
-      <Button asChild variant="outline" className="mt-6 w-full rounded-xl text-xs font-bold bg-neutral-950 hover:bg-neutral-900 border-neutral-850">
-        <Link href={`/tutors/${profile.id}`}>
-          View Full Profile
-        </Link>
+      <Button
+        asChild
+        variant="outline"
+        className="mt-6 w-full rounded-xl text-xs font-bold bg-neutral-950 hover:bg-neutral-900 border-neutral-850"
+      >
+        <Link href={`/tutors/${profile.id}`}>View Full Profile</Link>
       </Button>
     </Card>
   );

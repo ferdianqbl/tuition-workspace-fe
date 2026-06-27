@@ -1,13 +1,17 @@
 import { baseApi } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetMyTutorProfileKey } from "./get-me.service";
 
-export async function DeleteTutorDocumentService(docId: string): Promise<IResponse<null>> {
+export async function DeleteTutorDocumentService(
+  docId: string,
+): Promise<IResponse<null>> {
   try {
-    const { data } = await baseApi.delete<IResponse<null>>(`/tutors/documents/${docId}`);
+    const { data } = await baseApi.delete<IResponse<null>>(
+      `/tutors/documents/${docId}`,
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -22,7 +26,9 @@ export async function DeleteTutorDocumentService(docId: string): Promise<IRespon
   }
 }
 
-export function useDeleteTutorDocument(config?: TMutationConfig<typeof DeleteTutorDocumentService>) {
+export function useDeleteTutorDocument(
+  config?: TMutationConfig<typeof DeleteTutorDocumentService>,
+) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = config || {};
   return useMutation({

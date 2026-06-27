@@ -1,14 +1,26 @@
-import { use, useState } from "react";
-import { useGetMe } from "@/services/auth/get-me.service";
-import { useGetTutorById } from "@/services/tutor/get-by-id.service";
-import { EUserRole } from "@/types/user.type";
-import Link from "next/link";
-import { ArrowLeft, FileText, Sparkles, GraduationCap, BookOpen, AlertCircle, Download, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
 import { ForbiddenCard } from "@/components/shared/forbidden-card";
 import { LoadingScreen } from "@/components/shared/loading-screen";
-import { DownloadTutorDocumentService, triggerTutorFileDownload } from "@/services/tutor/download-doc.service";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
+import { useGetMe } from "@/services/auth/get-me.service";
+import {
+  DownloadTutorDocumentService,
+  triggerTutorFileDownload,
+} from "@/services/tutor/download-doc.service";
+import { useGetTutorById } from "@/services/tutor/get-by-id.service";
+import { EUserRole } from "@/types/user.type";
+import {
+  AlertCircle,
+  ArrowLeft,
+  BookOpen,
+  Download,
+  FileText,
+  GraduationCap,
+  Loader2,
+  Sparkles,
+} from "lucide-react";
+import Link from "next/link";
+import { use, useState } from "react";
 import { toast } from "sonner";
 
 interface TutorDetailPageProps {
@@ -35,9 +47,14 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
   };
 
   // Authorization: Parents and Admins only (tutors cannot view other tutors)
-  const isAuthorized = user?.role === EUserRole.PARENT || user?.role === EUserRole.ADMIN;
+  const isAuthorized =
+    user?.role === EUserRole.PARENT || user?.role === EUserRole.ADMIN;
 
-  const { data: profileData, isLoading, isError } = useGetTutorById(id, {
+  const {
+    data: profileData,
+    isLoading,
+    isError,
+  } = useGetTutorById(id, {
     enabled: !!isAuthorized && !!id,
   });
 
@@ -59,9 +76,14 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
         <AlertCircle className="w-10 h-10 text-rose-400 mb-3" />
         <h3 className="text-base font-bold text-white mb-1">Tutor Not Found</h3>
         <p className="text-xs text-neutral-500 max-w-xs mb-6">
-          The tutor profile you are looking for was not found or has been deactivated.
+          The tutor profile you are looking for was not found or has been
+          deactivated.
         </p>
-        <Button asChild variant="outline" className="rounded-xl text-xs font-semibold">
+        <Button
+          asChild
+          variant="outline"
+          className="rounded-xl text-xs font-semibold"
+        >
           <Link href="/tutors">
             <ArrowLeft className="w-4 h-4 mr-2" />
             Back to Directory
@@ -75,7 +97,11 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
     <div className="space-y-6 max-w-4xl mx-auto">
       {/* Back Button */}
       <div>
-        <Button asChild variant="ghost" className="text-xs font-semibold text-neutral-400 hover:text-white px-0 hover:bg-transparent">
+        <Button
+          asChild
+          variant="ghost"
+          className="text-xs font-semibold text-neutral-400 hover:text-white px-0 hover:bg-transparent"
+        >
           <Link href="/tutors" className="flex items-center gap-2">
             <ArrowLeft className="w-4 h-4" />
             Back to Directory
@@ -122,7 +148,9 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs text-neutral-500 italic">No qualifications specified.</p>
+                <p className="text-xs text-neutral-500 italic">
+                  No qualifications specified.
+                </p>
               )}
             </div>
 
@@ -144,7 +172,9 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
                   ))}
                 </ul>
               ) : (
-                <p className="text-xs text-neutral-500 italic">No experience specified.</p>
+                <p className="text-xs text-neutral-500 italic">
+                  No experience specified.
+                </p>
               )}
             </div>
           </div>
@@ -156,7 +186,8 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
                 Supporting Verification Documents
               </h2>
               <p className="text-[10px] text-neutral-500 mt-0.5">
-                Academic and identity verification files officially uploaded by this tutor.
+                Academic and identity verification files officially uploaded by
+                this tutor.
               </p>
             </div>
 
@@ -167,14 +198,17 @@ export function TutorDetailPage({ params }: TutorDetailPageProps) {
             ) : (
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {profile.documents.map((doc) => (
-                   <div
+                  <div
                     key={doc.id}
                     className="flex items-center justify-between p-3.5 rounded-xl bg-neutral-950/60 border border-neutral-850 text-xs hover:border-neutral-700 transition-all"
                   >
                     <div className="flex items-center gap-3 min-w-0">
                       <FileText className="w-5 h-5 text-indigo-400 shrink-0" />
                       <div className="min-w-0">
-                        <p className="text-white font-medium truncate" title={doc.filename}>
+                        <p
+                          className="text-white font-medium truncate"
+                          title={doc.filename}
+                        >
                           {doc.filename}
                         </p>
                         <p className="text-[10px] text-neutral-500 mt-0.5">

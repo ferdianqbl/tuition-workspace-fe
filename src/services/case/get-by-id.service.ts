@@ -1,13 +1,15 @@
 import { baseApi } from "@/lib/axios";
-import { IResponse } from "@/types/response.type";
+import type { TQueryConfig } from "@/lib/react-query";
 import { ITuitionCase } from "@/types/case.type";
+import { IResponse } from "@/types/response.type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { TQueryConfig } from "@/lib/react-query";
 
 export const GetCaseByIdKey = "GetCaseById";
 
-export async function GetCaseByIdService(id: string): Promise<IResponse<ITuitionCase | null>> {
+export async function GetCaseByIdService(
+  id: string,
+): Promise<IResponse<ITuitionCase | null>> {
   try {
     const { data } = await baseApi.get<IResponse<ITuitionCase>>(`/cases/${id}`);
     return data;
@@ -24,7 +26,10 @@ export async function GetCaseByIdService(id: string): Promise<IResponse<ITuition
   }
 }
 
-export function useGetCaseById(id: string, config?: TQueryConfig<typeof GetCaseByIdService>) {
+export function useGetCaseById(
+  id: string,
+  config?: TQueryConfig<typeof GetCaseByIdService>,
+) {
   return useQuery<IResponse<ITuitionCase | null>>({
     queryKey: [GetCaseByIdKey, id],
     queryFn: () => GetCaseByIdService(id),

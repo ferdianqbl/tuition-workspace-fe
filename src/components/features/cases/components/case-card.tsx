@@ -1,8 +1,8 @@
-import Link from "next/link";
-import { Calendar, BookOpen, MapPin, DollarSign } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
+import { Card } from "@/components/ui/card";
 import { ECaseStatus } from "@/types/case.type";
+import { BookOpen, Calendar, DollarSign, MapPin } from "lucide-react";
+import Link from "next/link";
 
 interface CaseCardProps {
   tcase: {
@@ -28,8 +28,8 @@ export function CaseCard({ tcase }: CaseCardProps) {
               tcase.status === ECaseStatus.OPEN
                 ? "bg-emerald-500/10 text-emerald-400 border border-emerald-500/20"
                 : tcase.status === ECaseStatus.MATCHED
-                ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
-                : "bg-neutral-850 text-neutral-500 border border-neutral-800"
+                  ? "bg-indigo-500/10 text-indigo-400 border border-indigo-500/20"
+                  : "bg-neutral-850 text-neutral-500 border border-neutral-800"
             }`}
           >
             {tcase.status}
@@ -67,10 +67,12 @@ export function CaseCard({ tcase }: CaseCardProps) {
         </div>
       </div>
 
-      <Button asChild variant="outline" className="mt-6 w-full rounded-xl text-xs font-bold bg-neutral-950 hover:bg-neutral-900 border-neutral-850">
-        <Link href={`/cases/${tcase.id}`}>
-          Open Case Details
-        </Link>
+      <Button
+        asChild
+        variant="outline"
+        className="mt-6 w-full rounded-xl text-xs font-bold bg-neutral-950 hover:bg-neutral-900 border-neutral-850"
+      >
+        <Link href={`/cases/${tcase.id}`}>Open Case Details</Link>
       </Button>
     </Card>
   );

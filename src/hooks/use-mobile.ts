@@ -13,7 +13,7 @@ export function useIsMobile({
       mql.addEventListener("change", onStoreChange);
       return () => mql.removeEventListener("change", onStoreChange);
     },
-    [breakpoint]
+    [breakpoint],
   );
 
   const getSnapshot = React.useCallback(() => {

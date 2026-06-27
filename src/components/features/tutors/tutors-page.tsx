@@ -1,14 +1,20 @@
-import { useState } from "react";
-import { useGetMe } from "@/services/auth/get-me.service";
-import { useGetAllTutors } from "@/services/tutor/get-all.service";
-import { useDebounce } from "@/hooks/use-debounce";
-import { EUserRole } from "@/types/user.type";
-import { Search, ChevronLeft, ChevronRight, Sparkles, User } from "lucide-react";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { ForbiddenCard } from "@/components/shared/forbidden-card";
 import { LoadingScreen } from "@/components/shared/loading-screen";
 import { NotFoundCard } from "@/components/shared/not-found-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/use-debounce";
+import { useGetMe } from "@/services/auth/get-me.service";
+import { useGetAllTutors } from "@/services/tutor/get-all.service";
+import { EUserRole } from "@/types/user.type";
+import {
+  ChevronLeft,
+  ChevronRight,
+  Search,
+  Sparkles,
+  User,
+} from "lucide-react";
+import { useState } from "react";
 import { TutorCard } from "./components/tutor-card";
 
 export function TutorsPage() {
@@ -32,7 +38,7 @@ export function TutorsPage() {
     },
     {
       enabled: !!isParent,
-    }
+    },
   );
 
   if (!isParent) {
@@ -60,7 +66,8 @@ export function TutorsPage() {
             Tutor Directory
           </h1>
           <p className="text-xs text-neutral-400 mt-1.5">
-            Find and discover the best qualified tutors to guide your child's learning process.
+            Find and discover the best qualified tutors to guide your
+            child&apos;s learning process.
           </p>
         </div>
 

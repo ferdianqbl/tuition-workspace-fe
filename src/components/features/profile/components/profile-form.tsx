@@ -1,10 +1,3 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useUpsertTutorProfile } from "@/services/tutor/upsert.service";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -14,8 +7,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { useUpsertTutorProfile } from "@/services/tutor/upsert.service";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import * as z from "zod";
 
 const profileSchema = z.object({
   displayName: z
@@ -115,7 +115,9 @@ export function ProfileForm({ initialData, onSuccess }: ProfileFormProps) {
           name="qualificationsInput"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Academic Qualifications (Separate with commas)</FormLabel>
+              <FormLabel>
+                Academic Qualifications (Separate with commas)
+              </FormLabel>
               <FormControl>
                 <Input
                   type="text"
@@ -125,7 +127,8 @@ export function ProfileForm({ initialData, onSuccess }: ProfileFormProps) {
                 />
               </FormControl>
               <span className="text-[10px] text-muted-foreground block">
-                Example: B.Sc Chemistry NUS, Cambridge A-Level Teaching Certificate
+                Example: B.Sc Chemistry NUS, Cambridge A-Level Teaching
+                Certificate
               </span>
               <FormMessage />
             </FormItem>
@@ -147,7 +150,8 @@ export function ProfileForm({ initialData, onSuccess }: ProfileFormProps) {
                 />
               </FormControl>
               <span className="text-[10px] text-muted-foreground block">
-                Enter your teaching experience. Press Enter to separate rows of experiences.
+                Enter your teaching experience. Press Enter to separate rows of
+                experiences.
               </span>
               <FormMessage />
             </FormItem>

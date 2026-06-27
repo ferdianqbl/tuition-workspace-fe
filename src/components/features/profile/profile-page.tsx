@@ -1,12 +1,18 @@
+import { ForbiddenCard } from "@/components/shared/forbidden-card";
+import { LoadingScreen } from "@/components/shared/loading-screen";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { useGetMe } from "@/services/auth/get-me.service";
 import { useGetMyTutorProfile } from "@/services/tutor/get-me.service";
 import { EUserRole } from "@/types/user.type";
 import { Sparkles } from "lucide-react";
-import { ForbiddenCard } from "@/components/shared/forbidden-card";
-import { LoadingScreen } from "@/components/shared/loading-screen";
-import { ProfileForm } from "./components/profile-form";
 import { DocumentList } from "./components/document-list";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { ProfileForm } from "./components/profile-form";
 
 export function ProfilePage() {
   const { data: meData } = useGetMe();
@@ -15,7 +21,11 @@ export function ProfilePage() {
   // Authorization: Only allow TUTOR role
   const isTutor = user?.role === EUserRole.TUTOR;
 
-  const { data: profileData, isLoading: isProfileLoading, refetch } = useGetMyTutorProfile({
+  const {
+    data: profileData,
+    isLoading: isProfileLoading,
+    refetch,
+  } = useGetMyTutorProfile({
     enabled: !!isTutor,
   });
 
@@ -40,7 +50,8 @@ export function ProfilePage() {
           Manage Tutor Profile
         </h1>
         <p className="text-xs text-neutral-400 mt-1.5">
-          Set up your academic qualifications, teaching experience history, and upload supporting credential documents.
+          Set up your academic qualifications, teaching experience history, and
+          upload supporting credential documents.
         </p>
       </div>
 
@@ -78,7 +89,8 @@ export function ProfilePage() {
                 Supporting Documents
               </CardTitle>
               <CardDescription className="text-[10px]">
-                Upload your degrees, educator credentials, or MOE teaching letters.
+                Upload your degrees, educator credentials, or MOE teaching
+                letters.
               </CardDescription>
             </CardHeader>
             <CardContent>

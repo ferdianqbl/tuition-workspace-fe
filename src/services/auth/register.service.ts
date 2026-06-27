@@ -1,9 +1,9 @@
 import { baseApi } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { IUser } from "@/types/user.type";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 
 export interface IRegisterRequest {
   username: string;
@@ -12,9 +12,14 @@ export interface IRegisterRequest {
   role: string;
 }
 
-export async function RegisterService(payload: IRegisterRequest): Promise<IResponse<IUser>> {
+export async function RegisterService(
+  payload: IRegisterRequest,
+): Promise<IResponse<IUser>> {
   try {
-    const { data } = await baseApi.post<IResponse<IUser>>("/auth/register", payload);
+    const { data } = await baseApi.post<IResponse<IUser>>(
+      "/auth/register",
+      payload,
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {

@@ -1,9 +1,9 @@
 import { baseApi } from "@/lib/axios";
+import type { TQueryConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { ITutorProfilesPagedData } from "@/types/tutor.type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { TQueryConfig } from "@/lib/react-query";
 
 export const GetAllTutorsKey = "GetAllTutors";
 
@@ -13,9 +13,14 @@ export interface IGetAllTutorsParams {
   search?: string;
 }
 
-export async function GetAllTutorsService(params: IGetAllTutorsParams = {}): Promise<IResponse<ITutorProfilesPagedData>> {
+export async function GetAllTutorsService(
+  params: IGetAllTutorsParams = {},
+): Promise<IResponse<ITutorProfilesPagedData>> {
   try {
-    const { data } = await baseApi.get<IResponse<ITutorProfilesPagedData>>("/tutors", { params });
+    const { data } = await baseApi.get<IResponse<ITutorProfilesPagedData>>(
+      "/tutors",
+      { params },
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -30,7 +35,10 @@ export async function GetAllTutorsService(params: IGetAllTutorsParams = {}): Pro
   }
 }
 
-export function useGetAllTutors(params: IGetAllTutorsParams = {}, config?: TQueryConfig<typeof GetAllTutorsService>) {
+export function useGetAllTutors(
+  params: IGetAllTutorsParams = {},
+  config?: TQueryConfig<typeof GetAllTutorsService>,
+) {
   return useQuery<IResponse<ITutorProfilesPagedData>>({
     queryKey: [GetAllTutorsKey, params],
     queryFn: () => GetAllTutorsService(params),

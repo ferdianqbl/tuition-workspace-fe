@@ -1,15 +1,19 @@
 import { baseApi } from "@/lib/axios";
+import type { TQueryConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { ITutorProfile } from "@/types/tutor.type";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
-import type { TQueryConfig } from "@/lib/react-query";
 
 export const GetTutorByIdKey = "GetTutorById";
 
-export async function GetTutorByIdService(id: string): Promise<IResponse<ITutorProfile | null>> {
+export async function GetTutorByIdService(
+  id: string,
+): Promise<IResponse<ITutorProfile | null>> {
   try {
-    const { data } = await baseApi.get<IResponse<ITutorProfile>>(`/tutors/${id}`);
+    const { data } = await baseApi.get<IResponse<ITutorProfile>>(
+      `/tutors/${id}`,
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -24,7 +28,10 @@ export async function GetTutorByIdService(id: string): Promise<IResponse<ITutorP
   }
 }
 
-export function useGetTutorById(id: string, config?: TQueryConfig<typeof GetTutorByIdService>) {
+export function useGetTutorById(
+  id: string,
+  config?: TQueryConfig<typeof GetTutorByIdService>,
+) {
   return useQuery<IResponse<ITutorProfile | null>>({
     queryKey: [GetTutorByIdKey, id],
     queryFn: () => GetTutorByIdService(id),

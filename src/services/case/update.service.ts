@@ -1,11 +1,11 @@
 import { baseApi } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
+import { ECaseStatus, ITuitionCase } from "@/types/case.type";
 import { IResponse } from "@/types/response.type";
-import { ITuitionCase, ECaseStatus } from "@/types/case.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
-import { GetCaseByIdKey } from "./get-by-id.service";
 import { GetAllCasesKey } from "./get-all.service";
+import { GetCaseByIdKey } from "./get-by-id.service";
 
 export interface IUpdateCaseRequest {
   title?: string;
@@ -16,9 +16,18 @@ export interface IUpdateCaseRequest {
   status?: ECaseStatus;
 }
 
-export async function UpdateCaseService({ id, payload }: { id: string; payload: IUpdateCaseRequest }): Promise<IResponse<ITuitionCase>> {
+export async function UpdateCaseService({
+  id,
+  payload,
+}: {
+  id: string;
+  payload: IUpdateCaseRequest;
+}): Promise<IResponse<ITuitionCase>> {
   try {
-    const { data } = await baseApi.patch<IResponse<ITuitionCase>>(`/cases/${id}`, payload);
+    const { data } = await baseApi.patch<IResponse<ITuitionCase>>(
+      `/cases/${id}`,
+      payload,
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -33,14 +42,18 @@ export async function UpdateCaseService({ id, payload }: { id: string; payload: 
   }
 }
 
-export function useUpdateCase(config?: TMutationConfig<typeof UpdateCaseService>) {
+export function useUpdateCase(
+  config?: TMutationConfig<typeof UpdateCaseService>,
+) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = config || {};
   return useMutation({
     mutationFn: UpdateCaseService,
     onSuccess: (data, variables, onMutateResult, context) => {
       if (data.success) {
-        queryClient.invalidateQueries({ queryKey: [GetCaseByIdKey, variables.id] });
+        queryClient.invalidateQueries({
+          queryKey: [GetCaseByIdKey, variables.id],
+        });
         queryClient.invalidateQueries({ queryKey: [GetAllCasesKey] });
       }
       if (onSuccess) {

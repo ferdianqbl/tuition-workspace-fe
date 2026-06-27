@@ -1,21 +1,27 @@
 import { baseApi } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { ITutorDocument } from "@/types/tutor.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetMyTutorProfileKey } from "./get-me.service";
 
-export async function UploadTutorDocumentService(file: File): Promise<IResponse<ITutorDocument>> {
+export async function UploadTutorDocumentService(
+  file: File,
+): Promise<IResponse<ITutorDocument>> {
   try {
     const formData = new FormData();
     formData.append("file", file);
 
-    const { data } = await baseApi.post<IResponse<ITutorDocument>>("/tutors/documents", formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
+    const { data } = await baseApi.post<IResponse<ITutorDocument>>(
+      "/tutors/documents",
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -30,7 +36,9 @@ export async function UploadTutorDocumentService(file: File): Promise<IResponse<
   }
 }
 
-export function useUploadTutorDocument(config?: TMutationConfig<typeof UploadTutorDocumentService>) {
+export function useUploadTutorDocument(
+  config?: TMutationConfig<typeof UploadTutorDocumentService>,
+) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = config || {};
   return useMutation({

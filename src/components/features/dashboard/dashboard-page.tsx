@@ -1,11 +1,19 @@
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { useGetMe } from "@/services/auth/get-me.service";
 import { useGetMyTutorProfile } from "@/services/tutor/get-me.service";
 import { EUserRole } from "@/types/user.type";
-import { AlertCircle, User, Briefcase, Search, Sparkles, BookOpen, Settings } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Card, CardContent } from "@/components/ui/card";
-import { DashboardCard } from "./components/dashboard-card";
+import {
+  AlertCircle,
+  BookOpen,
+  Briefcase,
+  Search,
+  Settings,
+  Sparkles,
+  User,
+} from "lucide-react";
 import Link from "next/link";
+import { DashboardCard } from "./components/dashboard-card";
 
 export function DashboardPage() {
   const { data: meData } = useGetMe();
@@ -13,10 +21,11 @@ export function DashboardPage() {
 
   const isTutor = user?.role === EUserRole.TUTOR;
 
-  const { data: profileData, isLoading: isProfileLoading } = useGetMyTutorProfile({
-    enabled: isTutor,
-    retry: false,
-  });
+  const { data: profileData, isLoading: isProfileLoading } =
+    useGetMyTutorProfile({
+      enabled: isTutor,
+      retry: false,
+    });
 
   if (!user) return null;
 
@@ -37,7 +46,8 @@ export function DashboardPage() {
             Welcome Back, {user.name}!
           </h1>
           <p className="text-neutral-400 text-sm max-w-xl leading-relaxed">
-            Your integrated tuition marketplace app. Manage tutor search, track tuition cases, and upload credentials securely.
+            Your integrated tuition marketplace app. Manage tutor search, track
+            tuition cases, and upload credentials securely.
           </p>
         </div>
       </div>
@@ -51,16 +61,21 @@ export function DashboardPage() {
                 <AlertCircle className="w-5 h-5 text-rose-400" />
               </div>
               <div>
-                <h3 className="font-bold text-sm text-white">Tutor Profile Incomplete!</h3>
+                <h3 className="font-bold text-sm text-white">
+                  Tutor Profile Incomplete!
+                </h3>
                 <p className="text-xs text-neutral-400 mt-0.5">
-                  Please complete your tutor profile details first so parents can invite you to their tuition cases.
+                  Please complete your tutor profile details first so parents
+                  can invite you to their tuition cases.
                 </p>
               </div>
             </div>
-            <Button asChild variant="destructive" className="rounded-xl text-xs font-bold shrink-0">
-              <Link href="/profile">
-                Complete Profile Now
-              </Link>
+            <Button
+              asChild
+              variant="destructive"
+              className="rounded-xl text-xs font-bold shrink-0"
+            >
+              <Link href="/profile">Complete Profile Now</Link>
             </Button>
           </CardContent>
         </Card>

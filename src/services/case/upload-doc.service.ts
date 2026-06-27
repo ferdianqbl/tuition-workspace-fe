@@ -1,21 +1,31 @@
 import { baseApi } from "@/lib/axios";
-import { IResponse } from "@/types/response.type";
+import type { TMutationConfig } from "@/lib/react-query";
 import { ICaseDocument } from "@/types/case.type";
+import { IResponse } from "@/types/response.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetCaseByIdKey } from "./get-by-id.service";
 
-export async function UploadCaseDocumentService({ caseId, file }: { caseId: string; file: File }): Promise<IResponse<ICaseDocument>> {
+export async function UploadCaseDocumentService({
+  caseId,
+  file,
+}: {
+  caseId: string;
+  file: File;
+}): Promise<IResponse<ICaseDocument>> {
   try {
     const formData = new FormData();
     formData.append("file", file);
 
-    const { data } = await baseApi.post<IResponse<ICaseDocument>>(`/cases/${caseId}/documents`, formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
+    const { data } = await baseApi.post<IResponse<ICaseDocument>>(
+      `/cases/${caseId}/documents`,
+      formData,
+      {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       },
-    });
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -30,14 +40,18 @@ export async function UploadCaseDocumentService({ caseId, file }: { caseId: stri
   }
 }
 
-export function useUploadCaseDocument(config?: TMutationConfig<typeof UploadCaseDocumentService>) {
+export function useUploadCaseDocument(
+  config?: TMutationConfig<typeof UploadCaseDocumentService>,
+) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = config || {};
   return useMutation({
     mutationFn: UploadCaseDocumentService,
     onSuccess: (data, variables, onMutateResult, context) => {
       if (data.success) {
-        queryClient.invalidateQueries({ queryKey: [GetCaseByIdKey, variables.caseId] });
+        queryClient.invalidateQueries({
+          queryKey: [GetCaseByIdKey, variables.caseId],
+        });
       }
       if (onSuccess) {
         onSuccess(data, variables, onMutateResult, context);

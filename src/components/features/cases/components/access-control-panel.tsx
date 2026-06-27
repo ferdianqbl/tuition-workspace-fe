@@ -1,12 +1,18 @@
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import { useDebounce } from "@/hooks/use-debounce";
 import { useInviteTutor } from "@/services/case/invite-tutor.service";
 import { useRevokeTutor } from "@/services/case/revoke-tutor.service";
 import { useGetAllTutors } from "@/services/tutor/get-all.service";
-import { useDebounce } from "@/hooks/use-debounce";
-import { Shield, Plus, UserCheck, X, Loader2 } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
+import { Loader2, Plus, Shield, UserCheck, X } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
 
 interface AccessControlPanelProps {
@@ -21,7 +27,11 @@ interface AccessControlPanelProps {
   onRefresh: () => void;
 }
 
-export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessControlPanelProps) {
+export function AccessControlPanel({
+  caseId,
+  invitedTutors,
+  onRefresh,
+}: AccessControlPanelProps) {
   const [tutorSearch, setTutorSearch] = useState("");
   const debouncedTutorSearch = useDebounce(tutorSearch, 500);
 
@@ -32,7 +42,7 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
     },
     {
       enabled: debouncedTutorSearch.length > 0,
-    }
+    },
   );
 
   const inviteTutorMutation = useInviteTutor({
@@ -63,14 +73,19 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
   };
 
   const handleRevokeTutor = (tutorId: string) => {
-    if (confirm("Are you sure you want to revoke this tutor's access from the tuition case?")) {
+    if (
+      confirm(
+        "Are you sure you want to revoke this tutor's access from the tuition case?",
+      )
+    ) {
       revokeTutorMutation.mutate({ caseId, tutorId });
     }
   };
 
   const searchTutors = searchTutorsData?.data?.data || [];
   const inviteableTutors = searchTutors.filter(
-    (stutor) => !invitedTutors.some((invited) => invited.tutorId === stutor.userId)
+    (stutor) =>
+      !invitedTutors.some((invited) => invited.tutorId === stutor.userId),
   );
 
   return (
@@ -105,14 +120,18 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
                   <span>Searching tutors...</span>
                 </div>
               ) : inviteableTutors.length === 0 ? (
-                <p className="p-3 text-[10px] text-neutral-500 italic text-center">Tutor not found</p>
+                <p className="p-3 text-[10px] text-neutral-500 italic text-center">
+                  Tutor not found
+                </p>
               ) : (
                 inviteableTutors.map((tutor) => (
                   <div
                     key={tutor.id}
                     className="flex items-center justify-between p-3 border-b border-neutral-900 last:border-0 hover:bg-neutral-900/60 transition-all text-xs"
                   >
-                    <span className="text-white font-medium truncate pr-2">{tutor.displayName}</span>
+                    <span className="text-white font-medium truncate pr-2">
+                      {tutor.displayName}
+                    </span>
                     <Button
                       size="icon"
                       variant="ghost"
@@ -131,7 +150,9 @@ export function AccessControlPanel({ caseId, invitedTutors, onRefresh }: AccessC
 
         {/* Invited Tutors list */}
         <div className="space-y-3 pt-4 border-t border-neutral-800">
-          <h3 className="text-xs font-bold text-neutral-400">Invited / Assigned Tutors</h3>
+          <h3 className="text-xs font-bold text-neutral-400">
+            Invited / Assigned Tutors
+          </h3>
 
           {invitedTutors.length === 0 ? (
             <p className="text-xs text-neutral-500 italic bg-neutral-950/40 p-4 border border-neutral-850 rounded-2xl">

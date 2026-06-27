@@ -1,9 +1,9 @@
 import { baseApi, setToken } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { IUser } from "@/types/user.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetMeKey } from "./get-me.service";
 
 export interface ILoginResponseData {
@@ -16,9 +16,14 @@ export interface ILoginRequest {
   password: string;
 }
 
-export async function LoginService(payload: ILoginRequest): Promise<IResponse<ILoginResponseData>> {
+export async function LoginService(
+  payload: ILoginRequest,
+): Promise<IResponse<ILoginResponseData>> {
   try {
-    const { data } = await baseApi.post<IResponse<ILoginResponseData>>("/auth/login", payload);
+    const { data } = await baseApi.post<IResponse<ILoginResponseData>>(
+      "/auth/login",
+      payload,
+    );
     if (data.success && data.data?.token) {
       setToken(data.data.token);
     }

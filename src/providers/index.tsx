@@ -1,11 +1,11 @@
 "use client";
-import { ThemeProvider } from "next-themes";
 import { queryClient } from "@/lib/react-query";
 import {
   isServer,
   QueryClient,
   QueryClientProvider,
 } from "@tanstack/react-query";
+import { ThemeProvider } from "next-themes";
 import { memo } from "react";
 
 export default memo(Providers);

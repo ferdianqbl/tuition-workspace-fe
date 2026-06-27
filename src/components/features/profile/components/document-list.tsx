@@ -1,9 +1,12 @@
-import { useState } from "react";
-import { useUploadTutorDocument } from "@/services/tutor/upload-doc.service";
-import { useDeleteTutorDocument } from "@/services/tutor/delete-doc.service";
-import { DownloadTutorDocumentService, triggerTutorFileDownload } from "@/services/tutor/download-doc.service";
-import { FileText, Trash2, Upload, Loader2, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useDeleteTutorDocument } from "@/services/tutor/delete-doc.service";
+import {
+  DownloadTutorDocumentService,
+  triggerTutorFileDownload,
+} from "@/services/tutor/download-doc.service";
+import { useUploadTutorDocument } from "@/services/tutor/upload-doc.service";
+import { Download, FileText, Loader2, Trash2, Upload } from "lucide-react";
+import { useRef, useState } from "react";
 import { toast } from "sonner";
 
 interface DocumentListProps {
@@ -19,7 +22,7 @@ interface DocumentListProps {
 }
 
 export function DocumentList({ profile, onRefresh }: DocumentListProps) {
-  const [fileInputRef, setFileInputRef] = useState<HTMLInputElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
   const [downloadingDocId, setDownloadingDocId] = useState<string | null>(null);
 
   const handleFileDownload = async (docId: string, filename: string) => {
@@ -39,7 +42,7 @@ export function DocumentList({ profile, onRefresh }: DocumentListProps) {
     onSuccess: (data) => {
       if (data.success) {
         toast.success("Document uploaded successfully!");
-        if (fileInputRef) fileInputRef.value = "";
+        if (fileInputRef.current) fileInputRef.current.value = "";
         onRefresh();
       } else {
         toast.error(data.message || "Failed to upload document");
@@ -106,7 +109,10 @@ export function DocumentList({ profile, onRefresh }: DocumentListProps) {
               <div className="flex items-center gap-3 min-w-0">
                 <FileText className="w-4 h-4 text-indigo-400 shrink-0" />
                 <div className="min-w-0">
-                  <p className="text-white font-medium truncate" title={doc.filename}>
+                  <p
+                    className="text-white font-medium truncate"
+                    title={doc.filename}
+                  >
                     {doc.filename}
                   </p>
                   <p className="text-[10px] text-muted-foreground mt-0.5">
@@ -153,7 +159,7 @@ export function DocumentList({ profile, onRefresh }: DocumentListProps) {
             id="tutor-doc-upload"
             className="hidden"
             onChange={handleFileUpload}
-            ref={(ref) => setFileInputRef(ref)}
+            ref={fileInputRef}
             disabled={isUploading}
           />
           <label

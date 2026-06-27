@@ -1,9 +1,15 @@
 import { baseApi } from "@/lib/axios";
 
-export async function DownloadCaseDocumentService(caseId: string, docId: string): Promise<Blob> {
-  const { data } = await baseApi.get<Blob>(`/cases/${caseId}/documents/${docId}/download`, {
-    responseType: "blob",
-  });
+export async function DownloadCaseDocumentService(
+  caseId: string,
+  docId: string,
+): Promise<Blob> {
+  const { data } = await baseApi.get<Blob>(
+    `/cases/${caseId}/documents/${docId}/download`,
+    {
+      responseType: "blob",
+    },
+  );
   return data;
 }
 

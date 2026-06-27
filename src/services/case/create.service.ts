@@ -1,9 +1,9 @@
 import { baseApi } from "@/lib/axios";
-import { IResponse } from "@/types/response.type";
+import type { TMutationConfig } from "@/lib/react-query";
 import { ITuitionCase } from "@/types/case.type";
+import { IResponse } from "@/types/response.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetAllCasesKey } from "./get-all.service";
 
 export interface ICreateCaseRequest {
@@ -14,9 +14,14 @@ export interface ICreateCaseRequest {
   budgetPerHour: number;
 }
 
-export async function CreateCaseService(payload: ICreateCaseRequest): Promise<IResponse<ITuitionCase>> {
+export async function CreateCaseService(
+  payload: ICreateCaseRequest,
+): Promise<IResponse<ITuitionCase>> {
   try {
-    const { data } = await baseApi.post<IResponse<ITuitionCase>>("/cases", payload);
+    const { data } = await baseApi.post<IResponse<ITuitionCase>>(
+      "/cases",
+      payload,
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -31,7 +36,9 @@ export async function CreateCaseService(payload: ICreateCaseRequest): Promise<IR
   }
 }
 
-export function useCreateCase(config?: TMutationConfig<typeof CreateCaseService>) {
+export function useCreateCase(
+  config?: TMutationConfig<typeof CreateCaseService>,
+) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = config || {};
   return useMutation({

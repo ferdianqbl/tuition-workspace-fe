@@ -1,9 +1,9 @@
 import { baseApi } from "@/lib/axios";
+import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { ITutorProfile } from "@/types/tutor.type";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
-import type { TMutationConfig } from "@/lib/react-query";
 import { GetMyTutorProfileKey } from "./get-me.service";
 
 export interface IUpsertTutorRequest {
@@ -12,9 +12,14 @@ export interface IUpsertTutorRequest {
   experiences?: string[];
 }
 
-export async function UpsertTutorProfileService(payload: IUpsertTutorRequest): Promise<IResponse<ITutorProfile>> {
+export async function UpsertTutorProfileService(
+  payload: IUpsertTutorRequest,
+): Promise<IResponse<ITutorProfile>> {
   try {
-    const { data } = await baseApi.post<IResponse<ITutorProfile>>("/tutors", payload);
+    const { data } = await baseApi.post<IResponse<ITutorProfile>>(
+      "/tutors",
+      payload,
+    );
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
@@ -29,7 +34,9 @@ export async function UpsertTutorProfileService(payload: IUpsertTutorRequest): P
   }
 }
 
-export function useUpsertTutorProfile(config?: TMutationConfig<typeof UpsertTutorProfileService>) {
+export function useUpsertTutorProfile(
+  config?: TMutationConfig<typeof UpsertTutorProfileService>,
+) {
   const queryClient = useQueryClient();
   const { onSuccess, ...restConfig } = config || {};
   return useMutation({

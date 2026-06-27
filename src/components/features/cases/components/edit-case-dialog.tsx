@@ -1,28 +1,4 @@
-import { useEffect } from "react";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import * as z from "zod";
-import { useUpdateCase } from "@/services/case/update.service";
-import { ECaseStatus } from "@/types/case.type";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { Loader2 } from "lucide-react";
-import { toast } from "sonner";
 import {
   Dialog,
   DialogContent,
@@ -31,21 +7,39 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { useUpdateCase } from "@/services/case/update.service";
+import { ECaseStatus } from "@/types/case.type";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Loader2 } from "lucide-react";
+import { useEffect } from "react";
+import { useForm } from "react-hook-form";
+import { toast } from "sonner";
+import * as z from "zod";
 
 const editCaseSchema = z.object({
   title: z
     .string()
     .min(1, { message: "Case Title is required" })
     .min(5, { message: "Case Title must be at least 5 characters" }),
-  subject: z
-    .string()
-    .min(1, { message: "Subject is required" }),
-  level: z
-    .string()
-    .min(1, { message: "Education Level is required" }),
-  location: z
-    .string()
-    .min(1, { message: "Location is required" }),
+  subject: z.string().min(1, { message: "Subject is required" }),
+  level: z.string().min(1, { message: "Education Level is required" }),
+  location: z.string().min(1, { message: "Location is required" }),
   status: z.nativeEnum(ECaseStatus),
   budgetPerHour: z
     .number({ message: "Budget must be a positive number" })
@@ -69,7 +63,12 @@ interface EditCaseDialogProps {
   };
 }
 
-export function EditCaseDialog({ isOpen, onOpenChange, onSuccess, tcase }: EditCaseDialogProps) {
+export function EditCaseDialog({
+  isOpen,
+  onOpenChange,
+  onSuccess,
+  tcase,
+}: EditCaseDialogProps) {
   const updateCaseMutation = useUpdateCase({
     onSuccess: (data) => {
       if (data.success) {
@@ -121,14 +120,19 @@ export function EditCaseDialog({ isOpen, onOpenChange, onSuccess, tcase }: EditC
     <Dialog open={isOpen} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-lg bg-neutral-900 border-neutral-800 text-white rounded-3xl">
         <DialogHeader>
-          <DialogTitle className="text-lg font-bold text-white">Edit Tuition Case Details</DialogTitle>
+          <DialogTitle className="text-lg font-bold text-white">
+            Edit Tuition Case Details
+          </DialogTitle>
           <DialogDescription className="text-xs text-neutral-400">
             Modify the fields below to update your private tuition offer.
           </DialogDescription>
         </DialogHeader>
 
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 py-2">
+          <form
+            onSubmit={form.handleSubmit(onSubmit)}
+            className="space-y-4 py-2"
+          >
             <FormField
               control={form.control}
               name="title"
@@ -235,8 +239,12 @@ export function EditCaseDialog({ isOpen, onOpenChange, onSuccess, tcase }: EditC
                         </SelectTrigger>
                         <SelectContent className="bg-neutral-950 border border-neutral-800 text-white rounded-xl">
                           <SelectItem value={ECaseStatus.OPEN}>OPEN</SelectItem>
-                          <SelectItem value={ECaseStatus.MATCHED}>MATCHED</SelectItem>
-                          <SelectItem value={ECaseStatus.CLOSED}>CLOSED</SelectItem>
+                          <SelectItem value={ECaseStatus.MATCHED}>
+                            MATCHED
+                          </SelectItem>
+                          <SelectItem value={ECaseStatus.CLOSED}>
+                            CLOSED
+                          </SelectItem>
                         </SelectContent>
                       </Select>
                     </FormControl>
@@ -261,7 +269,11 @@ export function EditCaseDialog({ isOpen, onOpenChange, onSuccess, tcase }: EditC
                         placeholder="e.g. 80"
                         className="pl-8 rounded-xl bg-neutral-950 border-neutral-800 text-white placeholder-neutral-600 focus:border-indigo-500 focus:ring-indigo-500/20"
                         {...field}
-                        onChange={(e) => field.onChange(e.target.value === "" ? "" : Number(e.target.value))}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value === "" ? "" : Number(e.target.value),
+                          )
+                        }
                       />
                       <span className="absolute left-3 top-2.5 text-xs font-semibold text-neutral-500">
                         $
@@ -287,7 +299,9 @@ export function EditCaseDialog({ isOpen, onOpenChange, onSuccess, tcase }: EditC
                 disabled={isPending}
                 className="rounded-xl text-xs font-bold px-6 shadow-lg bg-indigo-650 hover:bg-indigo-600 text-white border-none"
               >
-                {isPending && <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" />}
+                {isPending && (
+                  <Loader2 className="w-3.5 h-3.5 animate-spin mr-2" />
+                )}
                 Save Changes
               </Button>
             </DialogFooter>
