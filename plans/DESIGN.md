@@ -59,11 +59,13 @@ The app is locked to a dark, modern obsidian theme. Colors are defined in `globa
 - Triggers follow inputs: `bg-neutral-950 border border-neutral-800 rounded-xl px-4 py-2.5 text-xs`.
 - Viewport lists drop down in a clean `bg-neutral-950 border border-neutral-800 text-white rounded-xl shadow-2xl p-1` card.
 
-### Tabs
-- List selector bar: `bg-neutral-950/80 border border-neutral-800/50 p-1.5 rounded-xl gap-2`.
-- Option triggers: `rounded-lg py-2 text-xs font-semibold data-active:bg-neutral-800 data-active:text-white`.
+### Form
+- Standard React Hook Form layout using `<Form>`, `<FormField>`, `<FormItem>`, `<FormLabel>`, `<FormControl>`, and `<FormMessage>`.
+- Labels style: `text-xs font-semibold text-neutral-400 uppercase tracking-wider block`.
+- Messages style: `text-xs font-semibold text-rose-500 mt-1.5`.
 
 ---
+
 
 ## 🔗 Cross-Repository References
 

@@ -18,12 +18,12 @@ Next.js App Router folders serve exclusively as clean routing entrypoints, deleg
 | Route Path | Rendered Feature Component | Role Access |
 |---|---|---|
 | `/` | `<AuthPage />` | Public (Login / Register Tabs) |
-| `/dashboard` | `<DashboardPage />` | Authenticated (Parent/Tutor Dashboard) |
+| `/dashboard` | `<DashboardPage />` | Authenticated (Parent/Tutor/Admin Dashboard) |
 | `/profile` | `<ProfilePage />` | `TUTOR` (Manage self tutor profile) |
-| `/tutors` | `<TutorsPage />` | `PARENT` (Tutor search directory) |
-| `/tutors/:id` | `<TutorDetailPage />` | `PARENT` (View tutor details) |
-| `/cases` | `<CasesPage />` | `PARENT` / `TUTOR` (Browse cases list) |
-| `/cases/:id` | `<CaseDetailPage />` | `PARENT` / `TUTOR` (Active case workspace) |
+| `/tutors` | `<TutorsPage />` | `PARENT` / `ADMIN` (Tutor search directory) |
+| `/tutors/:id` | `<TutorDetailPage />` | `PARENT` / `ADMIN` (View tutor details) |
+| `/cases` | `<CasesPage />` | `PARENT` / `TUTOR` / `ADMIN` (Browse cases list) |
+| `/cases/:id` | `<CaseDetailPage />` | `PARENT` / `TUTOR` / `ADMIN` (Active case workspace) |
 
 ---
 
