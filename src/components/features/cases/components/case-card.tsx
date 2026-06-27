@@ -14,6 +14,10 @@ interface CaseCardProps {
     budgetPerHour: number;
     status: ECaseStatus;
     createdAt: string;
+    user?: {
+      name: string;
+      username: string;
+    };
   };
 }
 
@@ -44,6 +48,11 @@ export function CaseCard({ tcase }: CaseCardProps) {
           <h3 className="text-sm font-bold text-white leading-snug line-clamp-2">
             {tcase.title}
           </h3>
+          {tcase.user && (
+            <p className="text-[10px] text-indigo-450 font-bold uppercase tracking-wider mt-1.5">
+              Creator: {tcase.user.name}
+            </p>
+          )}
         </div>
 
         {/* Level & Subject */}
@@ -63,7 +72,7 @@ export function CaseCard({ tcase }: CaseCardProps) {
         {/* Budget info */}
         <div className="flex items-center gap-3 text-xs text-neutral-300">
           <DollarSign className="w-4 h-4 text-indigo-400 shrink-0" />
-          <span>Rp {tcase.budgetPerHour.toLocaleString("id-ID")} / hour</span>
+          <span>{tcase.budgetPerHour} / hour</span>
         </div>
       </div>
 

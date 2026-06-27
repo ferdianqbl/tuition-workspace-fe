@@ -23,6 +23,10 @@ interface CaseDetailsCardProps {
     location: string;
     budgetPerHour: number;
     status: ECaseStatus;
+    user?: {
+      name: string;
+      username: string;
+    };
   };
   isOwner: boolean;
   onRefresh: () => void;
@@ -65,6 +69,11 @@ export function CaseDetailsCard({
               <h1 className="text-xl font-bold text-white mt-2">
                 {tcase.title}
               </h1>
+              {tcase.user && (
+                <p className="text-[10px] text-indigo-400 font-bold uppercase tracking-wider mt-1.5">
+                  Posted by: {tcase.user.name} ({tcase.user.username})
+                </p>
+              )}
             </div>
 
             {/* Status Indicator & Edit details */}
@@ -145,7 +154,7 @@ export function CaseDetailsCard({
               </span>
               <p className="text-xs text-white font-semibold mt-1 flex items-center gap-1">
                 <DollarSign className="w-3.5 h-3.5 text-indigo-400" />
-                Rp {tcase.budgetPerHour.toLocaleString("id-ID")}
+                {tcase.budgetPerHour} / hour
               </p>
             </div>
           </div>
