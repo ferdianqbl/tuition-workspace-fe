@@ -180,11 +180,11 @@ export function EditCaseDialog({ isOpen, onOpenChange, onSuccess, tcase }: EditC
                 value={budgetPerHour || ""}
                 onChange={(e) => setBudgetPerHour(Number(e.target.value))}
                 placeholder="e.g. 80"
-                className="pl-10"
+                className="pl-8"
                 required
               />
-              <span className="absolute left-3.5 top-2.5 text-xs font-semibold text-neutral-500">
-                $ / Rp
+              <span className="absolute left-3 top-2.5 text-xs font-semibold text-neutral-500">
+                $
               </span>
             </div>
           </div>
