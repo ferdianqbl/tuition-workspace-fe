@@ -42,12 +42,11 @@ Here are the technical explanations and justifications for the frontend architec
   * *Justification*: TanStack Query automates client cache validation, loading states, retries, and network error handling, eliminating raw `useEffect` API loops. Zustand handles lightweight user state variables cleanly.
 
 ### 2. Session Expiry & Auto-Logout Flow (Section A)
-* **Axios Interceptor Middleware**:
-  * An Axios client instance is configured in [api.ts](file:///Users/ferdianqbl/_WORK/Exploration/FS/tech-test/sibyl/tuition-workspace/fe/src/lib/api.ts). It includes a global **response interceptor**.
-  * If a request fails with a `401 Unauthorized` status (due to an invalid or expired JWT token), the interceptor automatically:
-    1. Triggers a toast notification warning the user of session expiration.
-    2. Invokes the local auth store's `logout()` action (wiping session records from Zustand and `localStorage`).
-    3. Redirects the browser window immediately to `/login`, prompting a clean login request.
+* **Pure Cookie Auth Flow**:
+  * Session credentials are saved strictly inside secure, HTTP-only browser cookies, removing any dependency on `localStorage` or JWT storage in client-side scripts.
+  * The Axios client in [index.tsx](file:///Users/ferdianqbl/_WORK/Exploration/FS/tech-test/sibyl/tuition-workspace/fe/src/lib/axios/index.tsx) is configured with `withCredentials: true` globally so the browser automatically handles cookie transmission.
+  * An Axios response interceptor monitors all request responses:
+    * If a request fails with a `401 Unauthorized` status (indicating token cookie expiration or deletion), the interceptor immediately clears memory caches and redirects the browser window back to `/`, prompting the user to log in again.
 
 ### 3. Graceful Error Handling & UI Permissions (Section C)
 * **Reflecting Permissions in the UI**:

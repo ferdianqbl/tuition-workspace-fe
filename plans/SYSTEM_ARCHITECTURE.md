@@ -33,9 +33,9 @@ The frontend is built as a single-page application (SPA) using React and Next.js
 - **Mutation Invalidation**: Whenever a mutation occurs (like uploading a credential document or updating a case status), React Query automatically invalidates the related cache keys, prompting the browser to fetch fresh, up-to-date information.
 
 ### Authentication Data Flow
-- **Session Tokens**: Active sessions are validated via a JWT token. This token is returned in the JSON payload of a successful login request.
-- **Request Interceptor**: An Axios interceptor retrieves the token from `localStorage` and appends it to the `Authorization` header as `Bearer <token>` on all outbound requests.
-- **Response Interceptor**: Another interceptor watches for `401 Unauthorized` responses. If a session token expires, the interceptor clears `localStorage` and instantly redirects the user to the log-in page to prevent invalid state calls.
+- **Session Tokens**: Active sessions are validated via a secure JWT session token set by the backend strictly as an `HttpOnly` cookie.
+- **Credentials Matching**: Axios is configured with `withCredentials: true` globally so that cookies are natively handled and passed by the browser with all outbound requests, entirely avoiding JavaScript read access or local storage.
+- **Response Interceptor**: An interceptor watches for `401 Unauthorized` responses. If the session token cookie expires, the interceptor automatically redirects the user back to the login page (`/`) to enforce fresh sessions.
 
 ---
 
