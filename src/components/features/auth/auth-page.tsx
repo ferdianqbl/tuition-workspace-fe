@@ -7,7 +7,6 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { getToken } from "@/lib/axios";
 import { useGetMe } from "@/services/auth/get-me.service";
 import { Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -20,7 +19,7 @@ export function AuthPage() {
   const [activeTab, setActiveTab] = useState<"login" | "register">("login");
 
   const { data: meData, isLoading: isMeLoading } = useGetMe({
-    enabled: typeof window !== "undefined" && !!getToken(),
+    retry: false,
   });
 
   useEffect(() => {

@@ -7,7 +7,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { Sparkles, LogOut, Briefcase, Users, User, LayoutDashboard, Menu, X, Loader2 } from "lucide-react";
 import { useState } from "react";
-import { getToken } from "@/lib/axios";
 import { Button } from "@/components/ui/button";
 import { useIsFetching, useIsMutating } from "@tanstack/react-query";
 
@@ -20,9 +19,7 @@ export function Navbar() {
   const isMutating = useIsMutating();
   const isGlobalLoading = isFetching > 0 || isMutating > 0;
 
-  const { data: meData } = useGetMe({
-    enabled: typeof window !== "undefined" && !!getToken(),
-  });
+  const { data: meData } = useGetMe();
 
   const logoutMutation = useLogout({
     onSuccess: () => {

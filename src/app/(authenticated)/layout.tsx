@@ -5,28 +5,16 @@ import { Navbar } from "@/components/ui/navbar";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import { getToken } from "@/lib/axios";
-
 export default function AuthenticatedLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   const router = useRouter();
-  
-  // Safe token extraction
-  const token = typeof window !== "undefined" ? getToken() : "";
 
   const { data: meData, isLoading, isError } = useGetMe({
-    enabled: !!token,
     retry: false,
   });
-
-  useEffect(() => {
-    if (typeof window !== "undefined" && !token) {
-      router.push("/");
-    }
-  }, [token, router]);
 
   useEffect(() => {
     if (!isLoading && (isError || !meData?.success)) {

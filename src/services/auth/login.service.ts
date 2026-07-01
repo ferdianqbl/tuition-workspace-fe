@@ -1,4 +1,4 @@
-import { baseApi, setToken } from "@/lib/axios";
+import { baseApi } from "@/lib/axios";
 import type { TMutationConfig } from "@/lib/react-query";
 import { IResponse } from "@/types/response.type";
 import { IUser } from "@/types/user.type";
@@ -24,9 +24,6 @@ export async function LoginService(
       "/auth/login",
       payload,
     );
-    if (data.success && data.data?.token) {
-      setToken(data.data.token);
-    }
     return data;
   } catch (error) {
     if (axios.isAxiosError(error) && error.response?.data) {
