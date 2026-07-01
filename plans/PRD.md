@@ -30,7 +30,7 @@ The Tuition Case Workspace is a secure, role-based platform designed to facilita
 - **Functional Requirements**:
   - Secure bcrypt hashing of user passwords on registration.
   - JWT token generation on successful login, containing role and user identifier.
-  - Axios interceptor to append authorization token headers.
+  - Axios credentials configuration to natively transmit secure HttpOnly session cookies.
   - Response interceptor to auto-clear query cache and redirect on `401 Unauthorized` responses.
 
 ### B. Tuition Case Directory
